@@ -125,6 +125,4 @@ GROUP BY ctbf.user_id;
 
         [thread.join() for thread in thread_list]
         result = {}
-        for i in sql_result:
-            result.update(i)
-        return [result]
+        return [result.update(i) for i in sql_result]
