@@ -10,6 +10,7 @@ __author__: wei.zhang
 from DataBaseOperatePool import DataBaseOperate as db
 from Log import Log
 from DataAggregate import DataAggregate
+from threading import Thread, Semaphore
 
 
 class sendEmailSQL(object):
@@ -99,3 +100,31 @@ GROUP BY ctbf.user_id;
         return aggregate_data.get_aggregate_result(add_up_result,
                                                    that_day_result,
                                                    key='联系方式')
+
+    @property
+    def flowers_statistics(self) -> list:
+        def query(sql):
+            with max_thread:
+                sql_result.extend(self.db.query_data(sql))
+
+        max_thread = Semaphore(5)
+        sql_result, sql_list, thread_list = list(), list(), list()
+        sql_list.append("""SELECT count(1) AS "当日新增蜂场数" FROM `fc-bee`.t_swarm_info WHERE is_delete=0 AND to_days(create_time) = to_days(now());""")
+        sql_list.append("""SELECT count(1) AS "当日新增蜂友数" FROM `world-user`.t_user WHERE is_delete=0 AND to_days(create_time) = to_days(now()) AND status<>3 AND account_type=21;""")
+        sql_list.append("""SELECT count(1) AS "当日登录蜂友数" FROM `world-user`.t_user WHERE is_delete=0 AND to_days(last_login_time) = to_days(now()) AND status<>3 AND account_type=21;""")
+        sql_list.append("""SELECT count(id) AS "当日调车次数",count(DISTINCT (user_id))AS "当日调车人数" FROM `fc-bee`.t_shunt WHERE is_delete=0 AND to_days(create_time) = to_days(now()) AND is_delete=0;""")
+        sql_list.append("""SELECT count(1) AS "当日蜂友互助信息条数",count(DISTINCT creator_id) AS "当日蜂友互助信息人数" FROM `fc-bee`.t_help_info WHERE to_days(create_time) = to_days(now());""")
+        sql_list.append("""SELECT count(DISTINCT creator_id) AS "当日设置天气的蜂友数" FROM `fc-bee`.t_user_nectar_source WHERE is_delete = 0 AND to_days(create_time) = to_days(now());""")
+        sql_list.append("""SELECT count(1) AS "累计蜂场数" FROM `fc-bee`.t_swarm_info WHERE is_delete=0 ;""")
+        sql_list.append("""SELECT count(1) AS "累计蜂友数" FROM `world-user`.t_user WHERE is_delete=0  AND status<>3 AND account_type=21;""")
+
+        for thread_sql in sql_list:
+            thread = Thread(target=query, args=(thread_sql,))
+            thread_list.append(thread)
+            thread.start()
+
+        [thread.join() for thread in thread_list]
+        result = {}
+        for i in sql_result:
+            result.update(i)
+        return [result]
