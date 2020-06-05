@@ -58,3 +58,21 @@ class DataAggregate(object):
         self.__operate_list_dict = list()
         self.__key = ""
         return self.__result
+
+    def get_aggregate_result_copy(self, operate_list_dict: list, key: str) -> list:
+        if len(operate_list_dict) > 1:
+            self.__operate_list_dict = operate_list_dict
+            self.__key = key
+            self.__do_aggregate()
+        else:
+            try:
+                self.__result = operate_list_dict[0]
+            except IndexError:
+                pass
+            finally:
+                self.__result = []
+
+        self.__tmp_date = set()
+        self.__operate_list_dict = list()
+        self.__key = ""
+        return self.__result

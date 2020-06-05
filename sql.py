@@ -13,9 +13,9 @@ from DataAggregate import DataAggregate
 from threading import Thread, Semaphore
 
 
-class sendEmailSQL(object):
+class sendEmail(object):
     def __init__(self):
-        super(sendEmailSQL, self).__init__()
+        super(sendEmail, self).__init__()
         self.L = Log("ConfigInformationSql")
         self.db = db()
         self.db.creat_db_pool()
@@ -47,6 +47,14 @@ class sendEmailSQL(object):
             order by 当日采集蜂场数量 DESC, tur.user_id ASC;
               """
         return self.db.query_data(sql)
+
+    def test_sql(self):
+        flowersql = open('flowerSQL.sql', 'r', encoding='UTF-8').read()
+        flowersql_list = flowersql.rsplit(';')
+        for sqlinfo in flowersql_list:
+            sqllist = sqlinfo.rsplit('/')
+            if sqlinfo != '':
+                print(self.db.query_data(sqllist[2] + ";"))
 
     @property
     def flowers_collection_statistics(self) -> list:
@@ -109,14 +117,21 @@ GROUP BY ctbf.user_id;
 
         max_thread = Semaphore(5)
         sql_result, sql_list, thread_list = list(), list(), list()
-        sql_list.append("""SELECT count(1) AS "当日新增蜂场数" FROM `fc-bee`.t_swarm_info WHERE is_delete=0 AND to_days(create_time) = to_days(now());""")
-        sql_list.append("""SELECT count(1) AS "当日新增蜂友数" FROM `world-user`.t_user WHERE is_delete=0 AND to_days(create_time) = to_days(now()) AND status<>3 AND account_type=21;""")
-        sql_list.append("""SELECT count(1) AS "当日登录蜂友数" FROM `world-user`.t_user WHERE is_delete=0 AND to_days(last_login_time) = to_days(now()) AND status<>3 AND account_type=21;""")
-        sql_list.append("""SELECT count(id) AS "当日调车次数",count(DISTINCT (user_id))AS "当日调车人数" FROM `fc-bee`.t_shunt WHERE is_delete=0 AND to_days(create_time) = to_days(now()) AND is_delete=0;""")
-        sql_list.append("""SELECT count(1) AS "当日蜂友互助信息条数",count(DISTINCT creator_id) AS "当日蜂友互助信息人数" FROM `fc-bee`.t_help_info WHERE to_days(create_time) = to_days(now());""")
-        sql_list.append("""SELECT count(DISTINCT creator_id) AS "当日设置天气的蜂友数" FROM `fc-bee`.t_user_nectar_source WHERE is_delete = 0 AND to_days(create_time) = to_days(now());""")
+        sql_list.append(
+            """SELECT count(1) AS "当日新增蜂场数" FROM `fc-bee`.t_swarm_info WHERE is_delete=0 AND to_days(create_time) = to_days(now());""")
+        sql_list.append(
+            """SELECT count(1) AS "当日新增蜂友数" FROM `world-user`.t_user WHERE is_delete=0 AND to_days(create_time) = to_days(now()) AND status<>3 AND account_type=21;""")
+        sql_list.append(
+            """SELECT count(1) AS "当日登录蜂友数" FROM `world-user`.t_user WHERE is_delete=0 AND to_days(last_login_time) = to_days(now()) AND status<>3 AND account_type=21;""")
+        sql_list.append(
+            """SELECT count(id) AS "当日调车次数",count(DISTINCT (user_id))AS "当日调车人数" FROM `fc-bee`.t_shunt WHERE is_delete=0 AND to_days(create_time) = to_days(now()) AND is_delete=0;""")
+        sql_list.append(
+            """SELECT count(1) AS "当日蜂友互助信息条数",count(DISTINCT creator_id) AS "当日蜂友互助信息人数" FROM `fc-bee`.t_help_info WHERE to_days(create_time) = to_days(now());""")
+        sql_list.append(
+            """SELECT count(DISTINCT creator_id) AS "当日设置天气的蜂友数" FROM `fc-bee`.t_user_nectar_source WHERE is_delete = 0 AND to_days(create_time) = to_days(now());""")
         sql_list.append("""SELECT count(1) AS "累计蜂场数" FROM `fc-bee`.t_swarm_info WHERE is_delete=0 ;""")
-        sql_list.append("""SELECT count(1) AS "累计蜂友数" FROM `world-user`.t_user WHERE is_delete=0  AND status<>3 AND account_type=21;""")
+        sql_list.append(
+            """SELECT count(1) AS "累计蜂友数" FROM `world-user`.t_user WHERE is_delete=0  AND status<>3 AND account_type=21;""")
 
         for thread_sql in sql_list:
             thread = Thread(target=query, args=(thread_sql,))
