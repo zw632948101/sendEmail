@@ -30,7 +30,7 @@ class sendEmail(sendEmailSQL):
             # 发送邮件结果
             self.L.info("通过Email发送报表")
             df = pd.DataFrame(datalist)
-            msg = MIMEText(df.to_html(), 'txt', 'utf-8')
+            msg = MIMEText(df.to_html(), 'html', 'utf-8')
             msg['Subject'] = Subject
             msg['From'] = self.email
             msg['To'] = ",".join(self.receiver)
@@ -43,8 +43,9 @@ class sendEmail(sendEmailSQL):
             pass
 
     def test_dict(self):
-        datainfo = self.offline_promotion_personnel_statistics()
-        self.send_message(datalist=datainfo, Subject="测试报表")
+        # datainfo = self.offline_promotion_personnel_statistics()
+        # self.send_message(datalist=datainfo, Subject="测试报表")
+        self.send_message(datalist=self.flowers_collection_statistics, Subject="测试报表")
 
 
 if __name__ == '__main__':
