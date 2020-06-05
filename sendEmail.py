@@ -46,3 +46,7 @@ class sendEmail(sendEmailSQL):
     def send_flowers_collection_statistics(self):
         self.send_message(datalist=self.flowers_collection_statistics,
                           Subject="采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
+
+def query():
+    test = sendEmail()
+    test.send_flowers_collection_statistics()
