@@ -1,4 +1,0 @@
-2020-06-04 17:13:04,830 - DataBaseOperatePool.py - DataBaseOperate - DEBUG - creat_db_pool() -  创建数据库连接池：47.74.225.79
-2020-06-04 17:13:05,993 - DataBaseOperatePool.py - DataBaseOperate - DEBUG - creat_db_pool() -  创建数据库连接池完成!
-2020-06-04 17:13:06,160 - DataBaseOperatePool.py - DataBaseOperate - ERROR - query_data() -  执行sql异常：
-(1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT tr.full_name,\n       tsi.county,\n       count(DISTINCT IF(to_days(tsi.cre' at line 22")
