@@ -13,6 +13,7 @@ from Config import Config
 from Log import Log
 from sql import sendEmailSQL
 import pandas as pd
+from datetime import datetime
 
 
 class sendEmail(sendEmailSQL):
@@ -42,12 +43,6 @@ class sendEmail(sendEmailSQL):
         finally:
             pass
 
-    def test_dict(self):
-        # datainfo = self.offline_promotion_personnel_statistics()
-        # self.send_message(datalist=datainfo, Subject="测试报表")
-        self.send_message(datalist=self.flowers_collection_statistics, Subject="测试报表")
-
-
-if __name__ == '__main__':
-    se = sendEmail()
-    se.test_dict()
+    def send_flowers_collection_statistics(self):
+        self.send_message(datalist=self.flowers_collection_statistics,
+                          Subject="采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
