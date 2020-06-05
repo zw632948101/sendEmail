@@ -14,6 +14,8 @@ from Log import Log
 from sql import sendEmailSQL
 import pandas as pd
 from datetime import datetime
+from email.utils import formataddr
+from email.header import Header
 
 
 class sendEmail(sendEmailSQL):
@@ -33,7 +35,7 @@ class sendEmail(sendEmailSQL):
             df = pd.DataFrame(datalist)
             msg = MIMEText(df.to_html(), 'html', 'utf-8')
             msg['Subject'] = Subject
-            msg['From'] = self.email
+            msg['From'] = formataddr((Header("追花采集统计", 'utf-8').encode(), self.email))
             msg['To'] = ",".join(self.receiver)
             smtp_server = smtplib.SMTP_SSL(self.smtpHost, 465)
             smtp_server.login(self.email, self.password)
