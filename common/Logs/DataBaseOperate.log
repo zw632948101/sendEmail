@@ -1,2 +1,0 @@
-2020-06-08 15:52:09,611 - DataBaseOperatePool.py - DataBaseOperate - DEBUG - creat_db_pool() -  创建数据库连接池：47.74.225.79
-2020-06-08 15:52:10,778 - DataBaseOperatePool.py - DataBaseOperate - DEBUG - creat_db_pool() -  创建数据库连接池完成!
