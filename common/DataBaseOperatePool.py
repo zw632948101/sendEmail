@@ -9,9 +9,9 @@
 import pymysql
 import datetime
 import decimal
-from Log import Log
+from common.Log import Log
 from DBUtils.PooledDB import PooledDB
-from Config import Config
+from common.Config import Config
 
 
 class DataBaseOperate(object):
@@ -60,6 +60,7 @@ class DataBaseOperate(object):
             return results
         except Exception as e:
             self.__log.error('执行sql异常：\n%s' % e)
+            self.__log.error(sql)
         finally:
             cursor.close()
             con.close()

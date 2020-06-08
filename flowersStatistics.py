@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 import schedule
 import time
-from sendEmail import sendEmail
+from my_email.sendEmail import sendEmail
 
 
 def job():

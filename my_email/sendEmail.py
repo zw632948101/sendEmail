@@ -9,9 +9,9 @@ __author__: wei.zhang
 """
 import smtplib
 from email.mime.text import MIMEText
-from Config import Config
-from Log import Log
-from sql import sendEmailSQL
+from common.Config import Config
+from common.Log import Log
+from sql.sql import sendEmailSQL
 import pandas as pd
 from datetime import datetime
 from email.utils import formataddr
@@ -68,8 +68,10 @@ class sendEmail(sendEmailSQL):
         self.send_message(datalist=self.flowers_statistics,
                           Subject="累计采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
 
-def query():
-    test = sendEmail()
-    test.send_flowers_collection_statistics()
 
-query()
+# def query():
+#     test = sendEmail()
+#     test.send_flowers_collection_statistics()
+#
+#
+# query()

@@ -1,4 +1,4 @@
-from Log import Log
+from common.Log import Log
 
 
 class DataAggregate(object):
