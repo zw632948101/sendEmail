@@ -45,6 +45,22 @@ class sendEmail(sendEmailSQL):
         finally:
             pass
 
+    def flower_send_message(self, content, Subject):
+        try:
+            # 发送邮件结果
+            self.L.info("通过Email发送报表")
+            msg = MIMEText(content, 'html', 'utf-8')
+            msg['Subject'] = Subject
+            msg['From'] = formataddr((Header("追花采集统计", 'utf-8').encode(), self.email))
+            msg['To'] = ",".join(self.receiver)
+            smtp_server = smtplib.SMTP_SSL(self.smtpHost, 465)
+            smtp_server.login(self.email, self.password)
+            smtp_server.sendmail(self.email, self.receiver, msg.as_string())
+            smtp_server.quit()
+            self.L.info("发送邮件结束")
+        finally:
+            pass
+
     def send_flowers_collection_statistics(self):
         self.send_message(datalist=self.flowers_collection_statistics,
                           Subject="每日采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
