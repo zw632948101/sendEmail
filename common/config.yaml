@@ -2,7 +2,7 @@ email:
     smtpHost: smtp.exmail.qq.com
     sender: miaoshu@worldfarm.com
     password: Danong2018
-    receiver: [yong.guo@worldfarm.com]
+    receiver: [yong.guo@worldfarm.com,wei.zhang@worldfarm.com]
 mysql:
     host: 47.74.225.79
     port: 3306

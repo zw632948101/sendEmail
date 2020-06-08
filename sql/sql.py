@@ -7,15 +7,15 @@ __author__: wei.zhang
  @Time     : 2020/6/4 15:19
  @Software : PyCharm
 """
-from DataBaseOperatePool import DataBaseOperate as db
-from Log import Log
-from DataAggregate import DataAggregate
+from common.DataBaseOperatePool import DataBaseOperate as db
+from common.Log import Log
+from common.DataAggregate import DataAggregate
 from threading import Thread, Semaphore
 
 
-class sendEmail(object):
+class sendEmailSQL(object):
     def __init__(self):
-        super(sendEmail, self).__init__()
+        super(sendEmailSQL, self).__init__()
         self.L = Log("ConfigInformationSql")
         self.db = db()
         self.db.creat_db_pool()
@@ -141,6 +141,6 @@ GROUP BY ctbf.user_id;
 
         [thread.join() for thread in thread_list]
         result = {}
-        for i in sql_result:
-            result.update(i)
-        return [result]
+        result = [result.update(i) for i in sql_result]
+        return result
+    []
