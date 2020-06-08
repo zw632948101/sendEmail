@@ -1,2 +1,0 @@
-2020-06-08 15:52:10,784 - flowerSendEmail.py - FlowerSendEmail - DEBUG - read_sql_file() -  执行sql文件 sql/flowerSQL.sql 组装sql字典
-2020-06-08 15:52:10,785 - flowerSendEmail.py - FlowerSendEmail - ERROR - assembly_data_send() -  文件是空的！
