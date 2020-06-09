@@ -21,9 +21,9 @@ class DataBaseOperate(object):
         self.__db_pool = None
 
     def creat_db_pool(self):
-        mysql = Config('config').data.get('mysql')
+        mysql = Config.get_yaml_dict()
         user = mysql.get('username')
-        password = mysql.get('passwd')
+        password = mysql.get('MYSQL_PASSWD')
         port = mysql.get('port')
         host = mysql.get('host')
         self.__log.debug('创建数据库连接池：%s' % host)

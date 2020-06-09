@@ -12,7 +12,6 @@ from email.mime.text import MIMEText
 from common.Config import Config
 from common.Log import Log
 import pandas as pd
-from datetime import datetime
 from email.utils import formataddr
 from email.header import Header
 
@@ -21,9 +20,9 @@ class sendEmail():
     def __init__(self):
         super(sendEmail, self).__init__()
         self.L = Log("snedEmail", 'DEBUG').logger
-        emailinfo = Config('config').data.get('email')
+        emailinfo = Config.get_yaml_dict()
         self.email = emailinfo.get('sender')
-        self.password = emailinfo.get('password')
+        self.password = emailinfo.get('EMAIL_PASSWD')
         self.smtpHost = emailinfo.get('smtpHost')
         self.receiver = emailinfo.get('receiver')
 

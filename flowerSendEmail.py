@@ -123,7 +123,7 @@ class FlowerSendEmail(sendEmail):
             content += df.to_html()
         # 调用发送邮件方法
         self.flower_send_message(
-            content=content.replace('<td>0.0</td>', '<td>0</td>').replace('<td>NaN</td>', '<td>0</td>'),
+            content=content.replace('0.0</td>', '0</td>').replace('<td>NaN</td>', '<td>0</td>'),
             Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
     def read_files(self):

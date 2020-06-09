@@ -1,10 +1,18 @@
-email:
+env: QA
+
+
+initialValue: &initialValue
     smtpHost: smtp.exmail.qq.com
-    sender: miaoshu@worldfarm.com
-    password: Danong2018
-    receiver: [yong.guo@worldfarm.com,wei.zhang@worldfarm.com]
-mysql:
-    host: 47.74.225.79
     port: 3306
+    sender: miaoshu@worldfarm.com
+    host: 47.74.225.79
     username: qa
-    passwd: vFLDbvhvxhR.4uK26fLa0lLnVS44S0
+
+QA:
+    <<: *initialValue
+    receiver: [yong.guo@worldfarm.com,wei.zhang@worldfarm.com]
+
+
+PROD:
+    <<: *initialValue
+    receiver: [yong.guo@worldfarm.com,wei.zhang@worldfarm.com]
