@@ -76,3 +76,25 @@ class DataAggregate(object):
         self.__operate_list_dict = list()
         self.__key = ""
         return self.__result
+
+    @staticmethod
+    def valueNull(dt):
+        """
+        删除字典中Value为空的键值对
+        :param dt:
+        :return:
+        """
+
+        def func(t):
+            for i in list(t.keys()):
+                if not t.get(i) and t.get(i) not in ('', 0):
+                    t[i] = '0'
+            return t
+
+        if isinstance(dt, dict):
+            return func(dt)
+        if isinstance(dt, list):
+            dictlist = []
+            for i in dt:
+                dictlist.append(func(i))
+            return dictlist
