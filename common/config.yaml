@@ -1,12 +1,5 @@
-env: QA
-
-
 initialValue: &initialValue
     smtpHost: smtp.exmail.qq.com
-    port: 3306
-    sender: miaoshu@worldfarm.com
-    host: 47.74.225.79
-    username: qa
 
 QA:
     <<: *initialValue

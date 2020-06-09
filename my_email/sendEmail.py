@@ -21,7 +21,7 @@ class sendEmail():
         super(sendEmail, self).__init__()
         self.L = Log("snedEmail", 'DEBUG').logger
         emailinfo = Config.get_yaml_dict()
-        self.email = emailinfo.get('sender')
+        self.email = emailinfo.get('EMAIL_SENDER')
         self.password = emailinfo.get('EMAIL_PASSWD')
         self.smtpHost = emailinfo.get('smtpHost')
         self.receiver = emailinfo.get('receiver')

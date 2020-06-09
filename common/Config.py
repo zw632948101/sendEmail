@@ -23,9 +23,8 @@ class Config(object):
 
     @staticmethod
     def get_yaml_dict():
-        env = Config('config').data.get('env')
         env_dist = os.environ
-        env_dict = Config('config').data.get(env)
-        env_dict['MYSQL_PASSWD'] = env_dist.get('MYSQL_PASSWD')
-        env_dict['EMAIL_PASSWD'] = env_dist.get('EMAIL_PASSWD')
+        env_dict = Config('config').data.get(env_dist.get('EMAIL_ENV'))
+        for key in env_dist:
+            env_dict[key] = env_dist.get(key)
         return env_dict

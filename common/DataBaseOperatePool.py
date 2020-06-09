@@ -22,10 +22,10 @@ class DataBaseOperate(object):
 
     def creat_db_pool(self):
         mysql = Config.get_yaml_dict()
-        user = mysql.get('username')
+        user = mysql.get('MYSQL_USER')
         password = mysql.get('MYSQL_PASSWD')
-        port = mysql.get('port')
-        host = mysql.get('host')
+        port = int(mysql.get('MYSQL_PORT'))
+        host = mysql.get('MYSQL_HOST')
         self.__log.debug('创建数据库连接池：%s' % host)
         self.__db_pool = PooledDB(creator=pymysql,
                                   mincached=3,
