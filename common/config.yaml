@@ -3,9 +3,13 @@ initialValue: &initialValue
 
 QA:
     <<: *initialValue
-    receiver: [yong.guo@worldfarm.com,wei.zhang@worldfarm.com]
-
-
+    receiver:
+        - yong.guo@worldfarm.com
+        - wei.zhang@worldfarm.com
 PROD:
     <<: *initialValue
-    receiver: [yong.guo@worldfarm.com,wei.zhang@worldfarm.com]
+    receiver:
+        - yong.guo@worldfarm.com
+        - wei.zhang@worldfarm.com
+        - xiaofan.zhang@worldfarm.com
+        - xinran.liang@worldfarm.com
