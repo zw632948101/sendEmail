@@ -1,8 +1,8 @@
-DBUtils==
-numpy==
-pandas==
-PyMySQL==
-python-dateutil==
-pytz==
-PyYAML==
-six==
+DBUtils
+numpy
+pandas
+PyMySQL
+python-dateutil
+pytz
+PyYAML
+six
