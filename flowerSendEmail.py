@@ -13,6 +13,7 @@ import pandas as pd
 import numpy as np
 from common.DataAggregate import DataAggregate
 from itertools import chain
+from datetime import datetime
 
 
 class FlowerSendEmail(sendEmail):
@@ -97,6 +98,7 @@ class FlowerSendEmail(sendEmail):
                 content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
                 queryData = self.db.query_data(i.get('sql'))
                 df = pd.DataFrame(queryData)
+                df = df.fillna(value=0)
                 content += df.to_html()
                 Subject = i.get('email_title')
         # 对重复key的数据，先做数据合并，在使用pandas生成HTML格式数据
@@ -113,9 +115,10 @@ class FlowerSendEmail(sendEmail):
                 [result.update(i) for i in queryData]
                 queryData = [result]
             df = pd.DataFrame(queryData)
+            df.fillna(value=0)
             content += df.to_html()
         # 调用发送邮件方法
-        self.flower_send_message(content=content, Subject=Subject)
+        self.flower_send_message(content=content, Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
     def read_files(self):
         import os
