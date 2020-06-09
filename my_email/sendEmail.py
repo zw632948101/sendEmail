@@ -11,14 +11,13 @@ import smtplib
 from email.mime.text import MIMEText
 from common.Config import Config
 from common.Log import Log
-from sql.sql import sendEmailSQL
 import pandas as pd
 from datetime import datetime
 from email.utils import formataddr
 from email.header import Header
 
 
-class sendEmail(sendEmailSQL):
+class sendEmail():
     def __init__(self):
         super(sendEmail, self).__init__()
         self.L = Log("snedEmail", 'DEBUG').logger
@@ -61,13 +60,12 @@ class sendEmail(sendEmailSQL):
         finally:
             pass
 
-    def send_flowers_collection_statistics(self):
-        self.send_message(datalist=self.flowers_collection_statistics,
-                          Subject="每日采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
-
-        self.send_message(datalist=self.flowers_statistics,
-                          Subject="累计采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
-
+    # def send_flowers_collection_statistics(self):
+    #     self.send_message(datalist=self.flowers_collection_statistics,
+    #                       Subject="每日采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
+    #
+    #     self.send_message(datalist=self.flowers_statistics,
+    #                       Subject="累计采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
 
 # def query():
 #     test = sendEmail()

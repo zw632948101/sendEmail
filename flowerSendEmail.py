@@ -13,6 +13,7 @@ import pandas as pd
 import numpy as np
 from common.DataAggregate import DataAggregate
 from itertools import chain
+from common.DataBaseOperatePool import DataBaseOperate
 from datetime import datetime
 
 
@@ -20,6 +21,8 @@ class FlowerSendEmail(sendEmail):
     def __init__(self):
         super(FlowerSendEmail, self).__init__()
         self.L = Log("FlowerSendEmail", 'DEBUG').logger
+        self.db = DataBaseOperate()
+        self.db.creat_db_pool()
 
     def __del__(self):
         self.db.close_db_pool()
@@ -109,6 +112,7 @@ class FlowerSendEmail(sendEmail):
                 datalist.append(names.get(i + str(k)))
             if key_dict.get(i):
                 queryData = DataAggregate().get_aggregate_result_copy(datalist, key=key_dict.get(i))
+                # queryData = DataAggregate.valueNull(queryData)
             else:
                 queryData = list(chain.from_iterable(datalist))
                 result = {}
@@ -118,7 +122,9 @@ class FlowerSendEmail(sendEmail):
             df.fillna(value=0)
             content += df.to_html()
         # 调用发送邮件方法
-        self.flower_send_message(content=content, Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
+        self.flower_send_message(
+            content=content.replace('<td>0.0</td>', '<td>0</td>').replace('<td>NaN</td>', '<td>0</td>'),
+            Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
     def read_files(self):
         import os
