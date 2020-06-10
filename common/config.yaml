@@ -9,7 +9,5 @@ QA:
 PROD:
     <<: *initialValue
     receiver:
-        - yong.guo@worldfarm.com
-        - wei.zhang@worldfarm.com
         - xiaofan.zhang@worldfarm.com
         - xinran.liang@worldfarm.com

@@ -7,7 +7,7 @@
        ctbf.contact_number                                          AS '联系方式',
        count(DISTINCT (tsi.id))                                     AS '采集蜂场数量',
        count(DISTINCT (stu.id))                                     AS '采集蜂友数量',
-       count(DISTINCT if(stu.last_login_time IS NOT NULL, 1, NULL)) AS '登录蜂友数量',
+       count(DISTINCT if(stu.last_login_time IS NOT NULL, stu.id, NULL)) AS '登录蜂友数量',
        min(tsi.create_time)                                         AS '开始采集时间',
        max(tsi.create_time)                                         AS '结束采集时间',
        count(DISTINCT (tuns.creator_id))                            AS '推广蜂友天气设定人数',
