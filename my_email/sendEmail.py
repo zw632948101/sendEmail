@@ -8,12 +8,16 @@ __author__: wei.zhang
  @Software : PyCharm
 """
 import smtplib
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from common.Config import Config
 from common.Log import Log
 import pandas as pd
 from email.utils import formataddr
 from email.header import Header
+import os
 
 
 class sendEmail():
@@ -46,8 +50,21 @@ class sendEmail():
     def flower_send_message(self, content, Subject):
         try:
             # 发送邮件结果
+
             self.L.info("通过Email发送报表")
-            msg = MIMEText(content, 'html', 'utf-8')
+            msg = MIMEMultipart()
+            for root, dirs, files in os.walk(r'attachment/'):
+                for file in files:
+                    file_name = os.path.join(root, file)
+                    with open(file_name, 'rb') as f:
+                        mime = MIMEBase('1', 'xlsx', filename=file)
+                        mime.add_header('Content-Disposition', 'attachment', filename=file)
+                        mime.add_header('Content-ID', '<0>')
+                        mime.add_header('X-Attachment-Id', '0')
+                        mime.set_payload(f.read())
+                        encoders.encode_base64(mime)
+                        msg.attach(mime)
+            msg.attach(MIMEText(content, 'html', 'utf-8'))
             msg['Subject'] = Subject
             msg['From'] = formataddr((Header("追花采集统计", 'utf-8').encode(), self.email))
             msg['To'] = ",".join(self.receiver)

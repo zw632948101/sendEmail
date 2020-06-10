@@ -7,6 +7,9 @@ __author__: wei.zhang
  @Time     : 2020/6/5 16:12
  @Software : PyCharm
 """
+import os
+import shutil
+
 from common.Log import Log
 from my_email.sendEmail import sendEmail
 import pandas as pd
@@ -26,6 +29,20 @@ class FlowerSendEmail(sendEmail):
 
     def __del__(self):
         self.db.close_db_pool()
+
+    def del_file(self, filepath):
+        """
+        删除某一目录下的所有文件或文件夹
+        :param filepath: 路径
+        :return:
+        """
+        del_list = os.listdir(filepath)
+        for f in del_list:
+            file_path = os.path.join(filepath, f)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
 
     def read_sql_file(self, filename):
         """
@@ -72,6 +89,7 @@ class FlowerSendEmail(sendEmail):
         :return:
         """
         # 初始化变量
+        self.del_file('attachment/')
         content = ''
         Subject = ''
         sql = []
@@ -100,10 +118,13 @@ class FlowerSendEmail(sendEmail):
             else:  # 如果key不重复时，使用pandas生成HTML格式数据
                 content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
                 queryData = self.db.query_data(i.get('sql'))
+                Subject = i.get('email_title')
                 df = pd.DataFrame(queryData)
                 df = df.fillna(value=0)
                 content += df.to_html()
-                Subject = i.get('email_title')
+                df.to_excel(
+                    'attachment/' + i.get('statement_title') + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
+
         # 对重复key的数据，先做数据合并，在使用pandas生成HTML格式数据
         for i in repetition_key:
             content += '<br /><h3>%s</h3><br />' % lable_dict.get(i)
@@ -120,6 +141,7 @@ class FlowerSendEmail(sendEmail):
                 queryData = [result]
             df = pd.DataFrame(queryData)
             df.fillna(value=0)
+            df.to_excel('attachment/' + lable_dict.get(i) + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
             content += df.to_html()
         # 调用发送邮件方法
         self.flower_send_message(
