@@ -1,13 +1,30 @@
 initialValue: &initialValue
     smtpHost: smtp.exmail.qq.com
 
-QA:
-    <<: *initialValue
-    receiver:
-        - yong.guo@worldfarm.com
-        - wei.zhang@worldfarm.com
-PROD:
-    <<: *initialValue
-    receiver:
-        - xiaofan.zhang@worldfarm.com
-        - xinran.liang@worldfarm.com
+collecting_statistics:
+    QA:
+        <<: *initialValue
+        receiver:
+            - yong.guo@worldfarm.com
+            - wei.zhang@worldfarm.com
+    PROD:
+        <<: *initialValue
+        receiver:
+            - xiaofan.zhang@worldfarm.com
+            - xinran.liang@worldfarm.com
+    sql_file:
+        - flowerSQL.sql
+
+return_visit_statistics:
+    QA:
+        <<: *initialValue
+        receiver:
+            - yong.guo@worldfarm.com
+            - wei.zhang@worldfarm.com
+    PROD:
+        <<: *initialValue
+        receiver:
+            - xiaofan.zhang@worldfarm.com
+            - xinran.liang@worldfarm.com
+    sql_file:
+        - flowerSQL.sql

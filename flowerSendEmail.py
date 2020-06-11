@@ -149,7 +149,7 @@ class FlowerSendEmail(sendEmail):
                                                                                                         '</td>'),
             Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
-    def read_files(self):
+    def read_files(self, except_sql_file):
         import os
         for root, dirs, files in os.walk('sql/'):
             for file in files:
@@ -158,5 +158,7 @@ class FlowerSendEmail(sendEmail):
 
 
 if __name__ == '__main__':
+    import sys
     f = FlowerSendEmail()
-    f.read_files()
+    f.read_files(sys.argv[0])
+    # f.read_files(sys.argv[0])
