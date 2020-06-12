@@ -1,7 +1,7 @@
 initialValue: &initialValue
   smtpHost: smtp.exmail.qq.com
 
-collecting_statistics:
+collecting_statistics: &collecting_statistics
   QA:
     <<: *initialValue
     receiver:
@@ -16,7 +16,7 @@ collecting_statistics:
   sql_file:
     - flowerSQL.sql
 
-return_visit_statistics:
+return_visit_statistics: &return_visit_statistics
   QA:
     <<: *initialValue
     receiver:
@@ -27,6 +27,11 @@ return_visit_statistics:
     receiver:
       - xiaofan.zhang@worldfarm.com
       - xinran.liang@worldfarm.com
-  execute_time: 16
+  execute_time: 22
   sql_file:
     - flowerSQL.sql
+20:
+  <<: *collecting_statistics
+
+22:
+  <<: *return_visit_statistics

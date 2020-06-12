@@ -21,9 +21,9 @@ from datetime import datetime
 from common.Config import Config
 
 
-class FlowerSendEmail(sendEmail):
+class FlowerSendEmail(Config, sendEmail):
     def __init__(self):
-        super(FlowerSendEmail, self).__init__()
+        super(FlowerSendEmail, self).__init__(name='config')
         self.L = Log("FlowerSendEmail", 'DEBUG').logger
         self.initialize_parameter()
         self.db = DataBaseOperate()
@@ -31,20 +31,15 @@ class FlowerSendEmail(sendEmail):
         self.read_files()
 
     def initialize_parameter(self):
-        try:
-            conf = Config('config')
-            cf_key = conf.data.get(sys.argv[1])
-        except AttributeError:
-            conf = Config('date_config')
-            cf_key = conf.data.get(datetime.now().hour)
-        except IndexError:
-            conf = Config('date_config')
-            cf_key = conf.data.get(datetime.now().hour)
+        if len(sys.argv) >= 2:
+            cf_key = self.data.get(sys.argv[1])
+        else:
+            cf_key = self.data.get(datetime.now().hour)
         if cf_key:
             self.files = cf_key.get('sql_file')
             self.L.debug(self.files)
             self.execute_time = cf_key.get('execute_time')
-            self.config = conf.get_yaml_dict(cf_key)
+            self.config = self.get_yaml_dict(cf_key)
             self.email = self.config.get('EMAIL_SENDER')
             self.password = self.config.get('EMAIL_PASSWD')
             self.smtpHost = self.config.get('smtpHost')
