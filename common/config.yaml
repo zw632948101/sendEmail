@@ -12,7 +12,6 @@ collecting_statistics: &collecting_statistics
     receiver:
       - xiaofan.zhang@worldfarm.com
       - xinran.liang@worldfarm.com
-  execute_time: 20
   sql_file:
     - flowerSQL.sql
 
@@ -27,7 +26,6 @@ return_visit_statistics: &return_visit_statistics
     receiver:
       - xiaofan.zhang@worldfarm.com
       - xinran.liang@worldfarm.com
-  execute_time: 22
   sql_file:
     - flowerSQL.sql
 20:

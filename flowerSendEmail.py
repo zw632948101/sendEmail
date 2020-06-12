@@ -172,10 +172,9 @@ class FlowerSendEmail(Config, sendEmail):
 
     def read_files(self):
         execute_sql = False
-        dtime = datetime.now()
         for root, dirs, files in os.walk('sql/'):
             for file in files:
-                if file in self.files and dtime.hour == self.execute_time:
+                if file in self.files:
                     execute_sql = True
                     self.assembly_data_send(filename=os.path.join(root, file))
         if not execute_sql:
