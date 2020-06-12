@@ -11,7 +11,6 @@ import datetime
 import decimal
 from common.Log import Log
 from DBUtils.PooledDB import PooledDB
-from common.Config import Config
 
 
 class DataBaseOperate(object):
@@ -20,8 +19,8 @@ class DataBaseOperate(object):
         self.__log = Log("DataBaseOperate", 'DEBUG').logger
         self.__db_pool = None
 
-    def creat_db_pool(self):
-        mysql = Config.get_yaml_dict()
+    def creat_db_pool(self, mysql):
+        self.__log.debug(mysql)
         user = mysql.get('MYSQL_USER')
         password = mysql.get('MYSQL_PASSWD')
         port = int(mysql.get('MYSQL_PORT'))

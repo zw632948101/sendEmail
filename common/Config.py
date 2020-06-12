@@ -21,10 +21,9 @@ class Config(object):
         with open(current_path + "/" + name + ".yaml", encoding='utf-8') as f:
             self.data = yaml.safe_load(f)
 
-    @staticmethod
-    def get_yaml_dict():
+    def get_yaml_dict(self, env_dict):
         env_dist = os.environ
-        env_dict = Config('config').data.get(env_dist.get('EMAIL_ENV'))
+        env_dict = env_dict.get(env_dist.get('EMAIL_ENV'))
         for key in env_dist:
             env_dict[key] = env_dist.get(key)
         return env_dict

@@ -9,7 +9,7 @@ __author__: wei.zhang
 """
 import os
 import shutil
-
+import sys
 from common.Log import Log
 from my_email.sendEmail import sendEmail
 import pandas as pd
@@ -18,14 +18,40 @@ from common.DataAggregate import DataAggregate
 from itertools import chain
 from common.DataBaseOperatePool import DataBaseOperate
 from datetime import datetime
+from common.Config import Config
 
 
 class FlowerSendEmail(sendEmail):
     def __init__(self):
         super(FlowerSendEmail, self).__init__()
         self.L = Log("FlowerSendEmail", 'DEBUG').logger
+        self.initialize_parameter()
         self.db = DataBaseOperate()
-        self.db.creat_db_pool()
+        self.db.creat_db_pool(self.config)
+        self.read_files()
+
+    def initialize_parameter(self):
+        try:
+            conf = Config('config')
+            cf_key = conf.data.get(sys.argv[1])
+        except AttributeError:
+            conf = Config('date_config')
+            cf_key = conf.data.get(datetime.now().hour)
+        except IndexError:
+            conf = Config('date_config')
+            cf_key = conf.data.get(datetime.now().hour)
+        if cf_key:
+            self.files = cf_key.get('sql_file')
+            self.L.debug(self.files)
+            self.execute_time = cf_key.get('execute_time')
+            self.config = conf.get_yaml_dict(cf_key)
+            self.email = self.config.get('EMAIL_SENDER')
+            self.password = self.config.get('EMAIL_PASSWD')
+            self.smtpHost = self.config.get('smtpHost')
+            self.receiver = self.config.get('receiver')
+        else:
+            self.L.debug("没有可执行配置")
+            raise Exception("没有可执行配置")
 
     def __del__(self):
         self.db.close_db_pool()
@@ -149,16 +175,17 @@ class FlowerSendEmail(sendEmail):
                                                                                                         '</td>'),
             Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
-    def read_files(self, except_sql_file):
-        import os
+    def read_files(self):
+        execute_sql = False
+        dtime = datetime.now()
         for root, dirs, files in os.walk('sql/'):
             for file in files:
-                if os.path.splitext(file)[1] == '.sql':
+                if file in self.files and dtime.hour == self.execute_time:
+                    execute_sql = True
                     self.assembly_data_send(filename=os.path.join(root, file))
+        if not execute_sql:
+            self.L.info('没有找到要执行的sql')
 
 
 if __name__ == '__main__':
-    import sys
     f = FlowerSendEmail()
-    f.read_files(sys.argv[0])
-    # f.read_files(sys.argv[0])
