@@ -47,7 +47,7 @@ class sendEmail():
                         msg.attach(mime)
             msg.attach(MIMEText(content, 'html', 'utf-8'))
             msg['Subject'] = Subject
-            msg['From'] = formataddr((Header("追花采集统计", 'utf-8').encode(), self.email))
+            msg['From'] = formataddr((Header("追花族", 'utf-8').encode(), self.email))
             msg['To'] = ",".join(self.receiver)
             smtp_server = smtplib.SMTP_SSL(self.smtpHost, 465)
             smtp_server.login(self.email, self.password)
