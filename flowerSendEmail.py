@@ -31,9 +31,10 @@ class FlowerSendEmail(Config, sendEmail):
         self.read_files()
 
     def initialize_parameter(self):
-        if len(sys.argv) >= 2:
+        if sys.argv[1] != "":
             cf_key = self.data.get(sys.argv[1])
         else:
+            print("按时执行任务!")
             cf_key = self.data.get(datetime.now().hour)
         if cf_key:
             self.files = cf_key.get('sql_file')
