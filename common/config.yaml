@@ -27,7 +27,7 @@ return_visit_statistics: &return_visit_statistics
       - xiaofan.zhang@worldfarm.com
       - xinran.liang@worldfarm.com
   sql_file:
-    - flowerSQL.sql
+    - return_visit_statisticsSQL.sql
 20:
   <<: *collecting_statistics
 
