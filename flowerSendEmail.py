@@ -31,10 +31,14 @@ class FlowerSendEmail(Config, sendEmail):
         self.read_files()
 
     def initialize_parameter(self):
-        if sys.argv[1] != "":
+        """
+        sys.argv 直接取下标会抛下标越界异常
+        """
+        if sys.argv[1] != '':
+            self.L.debug("按照传入配置执行任务")
             cf_key = self.data.get(sys.argv[1])
         else:
-            print("按时执行任务!")
+            self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
         if cf_key:
             self.files = cf_key.get('sql_file')
@@ -46,8 +50,9 @@ class FlowerSendEmail(Config, sendEmail):
             self.smtpHost = self.config.get('smtpHost')
             self.receiver = self.config.get('receiver')
         else:
-            self.L.debug("没有可执行配置")
-            raise Exception("没有可执行配置")
+            # 传入的KEY没有在config文件中找到，或者执行时间与配置时间不匹配
+            self.L.debug("没有可执行配置，请确认传入KEY或执行时间")
+            raise Exception("没有可执行配置，请确认传入KEY或执行时间")
 
     def __del__(self):
         self.db.close_db_pool()
@@ -74,35 +79,15 @@ class FlowerSendEmail(Config, sendEmail):
         """
         self.L.debug("执行sql文件 %s 组装sql字典" % filename)
         flowersql = open(filename, 'r', encoding='UTF-8').read()
-        flowersql_list = flowersql.rsplit(';')
-        sql_dict = []
-        keylist = []
-        for sqlinfo in flowersql_list:
-            sqllist = sqlinfo.rsplit('/')
-            if sqlinfo != '':
-                remak_dict = eval(sqllist[1].replace('*', '').replace('\n', ''))
-                remak_dict['sql'] = sqllist[2] + ";"
-                sql_dict.append(remak_dict)
-                keylist.append(remak_dict.get('combine_label'))
-            else:
-                pass
-        return sql_dict, keylist
-
-    def repetition_key_number(self, keylist):
-        """
-        计算list中重复值次数生成字典
-        :param keylist: list
-        :return: 返回重复值和次数字典，返回重复大于等于2次的值和次数字典，返回重复值大于等于2次的值
-        """
-        repetition_key_dict = dict(zip(*np.unique(keylist, return_counts=True)))
-        repetition_key = list(repetition_key_dict.keys())
-        valuation_repetition_key_dict = dict(zip(*np.unique(keylist, return_counts=True)))
-        # 删除字典中小于2的key
-        for key in valuation_repetition_key_dict.keys():
-            if repetition_key_dict.get(key) < 2:
-                del repetition_key_dict[key]
-                repetition_key.remove(key)
-        return repetition_key_dict, valuation_repetition_key_dict, repetition_key
+        flowersql = flowersql.replace('\n{', '{')
+        sql_list = []
+        for sqlinfo in flowersql.rsplit('/*'):
+            if sqlinfo:
+                remak_dict, sqlstr = sqlinfo.rsplit('*/')
+                remak_dict = eval(remak_dict)
+                remak_dict['sql'] = [i + ';' for i in sqlstr.rsplit(';')][:-1]
+                sql_list.append(remak_dict)
+        return sql_list
 
     def assembly_data_send(self, filename):
         """
@@ -114,57 +99,41 @@ class FlowerSendEmail(Config, sendEmail):
         self.del_file('attachment/')
         content = ''
         Subject = ''
-        sql = []
-        key_dict = {}
-        lable_dict = {}
-        names = locals()
         # 将sql加入字典中
-        sql_dict, keylist = self.read_sql_file(filename=filename)
+        sql_dict = self.read_sql_file(filename=filename)
         if not sql_dict:
             self.L.error("文件是空的！")
             return
-            # 获取重复key以及每个重复key的次数
-        repetition_key_dict, valuation_repetition_key_dict, repetition_key = self.repetition_key_number(keylist)
         # 循环list获取数据库返回数据
         for i in sql_dict:
-            # 判断key是否为重复key，如果为重复key时进行命名空间动态生成变量进行赋值
-            if i.get('combine_label') in repetition_key:
-                for k in repetition_key:
-                    if i.get('combine_label') == k:
-                        num = valuation_repetition_key_dict.get(k)
-                        names[k + str(num - 1)] = self.db.query_data(i.get('sql'))
-                        key_dict[k] = i.get('combine_key')
-                        valuation_repetition_key_dict[k] = num - 1
-                        lable_dict[k] = i.get('statement_title')
-                        Subject = i.get('email_title')
-            else:  # 如果key不重复时，使用pandas生成HTML格式数据
-                content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
-                queryData = self.db.query_data(i.get('sql'))
-                Subject = i.get('email_title')
-                df = pd.DataFrame(queryData)
-                df = df.fillna(value=0)
-                content += df.to_html()
-                df.to_excel(
-                    'attachment/' + i.get('statement_title') + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
-
-        # 对重复key的数据，先做数据合并，在使用pandas生成HTML格式数据
-        for i in repetition_key:
-            content += '<br /><h3>%s</h3><br />' % lable_dict.get(i)
-            datalist = []
-            for k in range(repetition_key_dict.get(i)):
-                datalist.append(names.get(i + str(k)))
-            if key_dict.get(i):
-                queryData = DataAggregate().get_aggregate_result_copy(datalist, key=key_dict.get(i))
-                # queryData = DataAggregate.valueNull(queryData)
-            else:
-                queryData = list(chain.from_iterable(datalist))
-                result = {}
-                [result.update(i) for i in queryData]
-                queryData = [result]
+            # 判断字典内sql列表长度是否大于2
+            queryData = []
+            if len(i.get('sql')) >= 2:
+                datalist = []
+                if i.get('combine'):  # sql列表长度大于2，判断combine为True，如果为true合并sql查询结果
+                    if i.get('combine_key'):  # 判断有么有合并key，有使用key合并数据
+                        for k in range(len(i.get('sql'))):
+                            datalist.append(self.db.query_data(i.get('sql')[k]))
+                        queryData = DataAggregate().get_aggregate_result_copy(datalist, key=i.get('combine_key'))
+                    else:  # 没有combine_key或为空，直接合并
+                        for k in range(len(i.get('sql'))):
+                            datalist.append(self.db.query_data(i.get('sql')[k]))
+                        queryData = list(chain.from_iterable(datalist))
+                        result = {}
+                        [result.update(i) for i in queryData]
+                        queryData = [result]
+                else:  # 如果combine为False，不合并sql查询结果
+                    for k in range(len(i.get('sql'))):
+                        queryData.append(self.db.query_data(i.get('sql')[k]))
+            else:  # 字典内sql列表长度等于1，查询结果直接处理
+                queryData = self.db.query_data(i.get('sql')[0])
+            content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
             df = pd.DataFrame(queryData)
-            df.fillna(value=0)
-            df.to_excel('attachment/' + lable_dict.get(i) + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
+            df = df.fillna(value=0)
             content += df.to_html()
+            df.to_excel(
+                'attachment/' + i.get('statement_title') + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
+            Subject = i.get('email_title')
         # 调用发送邮件方法
         self.flower_send_message(
             content=content.replace('0.0</td>', '0</td>').replace('<td>NaN</td>', '<td>0</td>').replace('.0</td>',
