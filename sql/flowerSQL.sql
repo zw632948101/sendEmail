@@ -43,7 +43,7 @@ GROUP BY ctbf.user_id;
 /*
 {"email_title":"追花族采集统计","statement_title":"累计采集统计","combine_label":"add_up_statistics","combine":True,"combine_key":None}
 */
-SELECT count(1) AS "当日新增蜂场数" FROM `fc-bee`.t_swarm_info WHERE is_delete=0 AND to_days(create_time) = to_days(now());
+SELECT count(1) AS "当日新增蜂场数" FROM `fc-bee`.t_swarm_info WHERE is_delete=0 AND to_days(create_time) = to_days(now()) AND lat IS NOT NULL;
 /*
 {"email_title":"追花族采集统计","statement_title":"累计采集统计","combine_label":"add_up_statistics","combine":True,"combine_key":None}
 */
