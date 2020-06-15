@@ -24,7 +24,7 @@ return_visit_statistics: &return_visit_statistics
   PROD:
     <<: *initialValue
     receiver:
-      - wenci.zhang@worldfarm
+      - wenci.zhang@worldfarm.com
   sql_file:
     - return_visit_statisticsSQL.sql
 20:
