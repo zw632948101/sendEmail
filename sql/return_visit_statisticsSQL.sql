@@ -16,7 +16,7 @@ FROM `fc-bee`.t_user_login_statistics tuls
          LEFT JOIN `fc-bee`.t_shunt ts ON ts.user_id = tbf.user_id AND ts.is_delete = 0
          LEFT JOIN `fc-bee`.t_user_role tsr ON tsr.user_id = tuls.user_id AND tsr.is_delete = 0
 WHERE tbf.is_delete = 0
-  AND to_days(tuls.edit_time) = to_days(now()) - 1
+  AND to_days(tuls.edit_time) = to_days(now())
   AND tsr.role_code IS NULL
 GROUP BY tbf.user_id;
 /*
