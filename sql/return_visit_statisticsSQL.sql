@@ -12,12 +12,12 @@ SELECT if(tbf.real_name IS NOT NULL, tbf.real_name, tbf.user_name) AS '蜂友名
        tbf.address                                                 AS '蜂友位置',
        count(ts.id)                                                AS '调车次数'
 FROM `fc-bee`.t_user_login_statistics tuls
-         RIGHT JOIN `fc-bee`.t_bee_friend tbf
-                    ON tuls.user_id = tbf.user_id AND tuls.is_delete = 0 AND to_days(tuls.edit_time) = to_days(now())
+         LEFT JOIN `fc-bee`.t_bee_friend tbf ON tuls.user_id = tbf.user_id
          LEFT JOIN `fc-bee`.t_shunt ts ON ts.user_id = tbf.user_id AND ts.is_delete = 0
+         LEFT JOIN `fc-bee`.t_user_role tsr ON tsr.user_id = tuls.user_id AND tsr.is_delete = 0
 WHERE tbf.is_delete = 0
-  AND tuls.id IS NOT NULL
-  AND to_days(ts.create_time) = to_days(now())
+  AND to_days(tuls.edit_time) = to_days(now()) - 1
+  AND tsr.role_code IS NULL
 GROUP BY tbf.user_id;
 /*
 {"email_title":"每日回访名单","statement_title":"今日设置天气的蜂友","combine_label":"daily_weather_statistics","combine":False,"combine_key":None}
@@ -47,6 +47,7 @@ SELECT if(tbf.real_name IS NOT NULL, tbf.real_name, tbf.user_name) AS '蜂友名
            END                                                        '调车状态',
        tsa_load.address                                            AS '出发地',
        tsa_unload.address                                          AS '目的地',
+       ts.cancel_reasons                                           AS '取消原因',
        st.shunting_times                                           AS '历史调车次数',
        tbf.address                                                 AS '最后定位位置'
 FROM `fc-bee`.t_shunt ts
