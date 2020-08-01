@@ -1,3 +1,4 @@
 #!/bin/bash
 source /etc/profile
-/usr/local/python3.6.3/bin/python3.6 /root/service/sendEmail/flowerSendEmail.py "$1"
+source /home/qa/python_venv_36/bin/activate
+python3 /home/qa/sendEmail/flowerSendEmail.py "$1"
