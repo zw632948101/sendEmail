@@ -25,11 +25,11 @@ class FlowerSendEmail(Config, sendEmail):
     def __init__(self):
         super(FlowerSendEmail, self).__init__(name='config')
         self.L = Log("FlowerSendEmail", 'DEBUG').logger
+        self.abs_path = os.path.dirname(os.path.abspath(__file__))
         self.initialize_parameter()
         self.db = DataBaseOperate()
         self.db.creat_db_pool(self.config)
         self.read_files()
-        self.abs_path = os.path.dirname(os.path.abspath(__file__))
 
     def initialize_parameter(self):
         """
@@ -143,7 +143,6 @@ class FlowerSendEmail(Config, sendEmail):
 
     def read_files(self):
         execute_sql = False
-
         for root, dirs, files in os.walk(self.abs_path + '/sql/'):
             for file in files:
                 if file in self.files:
