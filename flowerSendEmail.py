@@ -29,6 +29,7 @@ class FlowerSendEmail(Config, sendEmail):
         self.db = DataBaseOperate()
         self.db.creat_db_pool(self.config)
         self.read_files()
+        self.abs_path = os.path.dirname(os.path.abspath(__file__))
 
     def initialize_parameter(self):
         """
@@ -96,7 +97,7 @@ class FlowerSendEmail(Config, sendEmail):
         :return:
         """
         # 初始化变量
-        self.del_file('attachment/')
+        self.del_file(self.abs_path + '/attachment/')
         content = ''
         Subject = ''
         # 将sql加入字典中
@@ -132,7 +133,7 @@ class FlowerSendEmail(Config, sendEmail):
             df = df.fillna(value=0)
             content += df.to_html()
             df.to_excel(
-                'attachment/' + i.get('statement_title') + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
+                self.abs_path + '/attachment/' + i.get('statement_title') + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
             Subject = i.get('email_title')
         # 调用发送邮件方法
         self.flower_send_message(
@@ -142,7 +143,8 @@ class FlowerSendEmail(Config, sendEmail):
 
     def read_files(self):
         execute_sql = False
-        for root, dirs, files in os.walk('sql/'):
+
+        for root, dirs, files in os.walk(self.abs_path + '/sql/'):
             for file in files:
                 if file in self.files:
                     execute_sql = True
