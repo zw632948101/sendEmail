@@ -27,6 +27,7 @@ class sendEmail():
         self.password = 'EMAIL_PASSWD'
         self.smtpHost = 'smtpHost'
         self.receiver = 'receiver'
+        self.abs_path = os.path.dirname(os.path.abspath(__file__)).replace('my_email','')
 
     def flower_send_message(self, content, Subject):
         try:
@@ -34,7 +35,8 @@ class sendEmail():
 
             self.L.info("通过Email发送报表")
             msg = MIMEMultipart()
-            for root, dirs, files in os.walk(r'attachment/'):
+
+            for root, dirs, files in os.walk(self.abs_path + r'attachment/'):
                 for file in files:
                     file_name = os.path.join(root, file)
                     with open(file_name, 'rb') as f:
