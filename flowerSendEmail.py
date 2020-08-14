@@ -35,9 +35,11 @@ class FlowerSendEmail(Config, sendEmail):
         """
         sys.argv 直接取下标会抛下标越界异常
         """
-        if sys.argv[1] != '':
-            self.L.debug("按照传入配置执行任务")
-            cf_key = self.data.get(sys.argv[1])
+        # if sys.argv[1] != '':
+        #     self.L.debug("按照传入配置执行任务")
+        #     cf_key = self.data.get(sys.argv[1])
+        if True:
+            cf_key = self.data.get("collecting_statistics")
         else:
             self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
@@ -130,14 +132,14 @@ class FlowerSendEmail(Config, sendEmail):
                 queryData = self.db.query_data(i.get('sql')[0])
             content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
             df = pd.DataFrame(queryData)
-            df = df.fillna(value=0)
+            df = df.fillna(value="")
             content += df.to_html()
             df.to_excel(
                 self.abs_path + '/attachment/' + i.get('statement_title') + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
             Subject = i.get('email_title')
         # 调用发送邮件方法
         self.flower_send_message(
-            content=content.replace('0.0</td>', '0</td>').replace('<td>NaN</td>', '<td>0</td>').replace('.0</td>',
+            content=content.replace('0.0</td>', '0</td>').replace('<td>NaN</td>', '<td></td>').replace('.0</td>',
                                                                                                         '</td>'),
             Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
