@@ -10,8 +10,8 @@ collecting_statistics: &collecting_statistics
   PROD:
     <<: *initialValue
     receiver:
-      - xiaofan.zhang@worldfarm.com
       - xinran.liang@worldfarm.com
+      - wenci.zhang@worldfarm.com
   sql_file:
     - flowerSQL.sql
 
@@ -28,6 +28,9 @@ return_visit_statistics: &return_visit_statistics
   sql_file:
     - return_visit_statisticsSQL.sql
 20:
+  <<: *collecting_statistics
+
+23:
   <<: *collecting_statistics
 
 22:
