@@ -45,10 +45,10 @@ acquired_commodity_statistics: &acquired_commodity_statistics
   PROD:
     <<: *initialValue
     receiver:
-      - wenci.zhang@worldfarm.com
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
-      - jianbin.wang@worldfarm.com
-      - fo.he@@worldfarm.com
+#      - wenci.zhang@worldfarm.com
+#      - jianbin.wang@worldfarm.com
+#      - fo.he@@worldfarm.com
   sql_file:
     - acquired_commodity_statistics.sql
