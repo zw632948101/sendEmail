@@ -35,3 +35,20 @@ return_visit_statistics: &return_visit_statistics
 
 22:
   <<: *return_visit_statistics
+
+acquired_commodity_statistics: &acquired_commodity_statistics
+  QA:
+    <<: *initialValue
+    receiver:
+      - wei.zhang@worldfarm.com
+      - shicao.he@worldfarm.com
+  PROD:
+    <<: *initialValue
+    receiver:
+      - wenci.zhang@worldfarm.com
+      - tong.zhang@worldfarm.com
+      - wei.zhang@worldfarm.com
+      - jianbin.wang@worldfarm.com
+      - fo.he@@worldfarm.com
+  sql_file:
+    - acquired_commodity_statistics.sql

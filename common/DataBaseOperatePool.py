@@ -10,8 +10,10 @@ import pymysql
 import datetime
 import decimal
 from common.Log import Log
-from DBUtils.PooledDB import PooledDB
-
+try:
+    from DBUtils.PooledDB import PooledDB
+except ModuleNotFoundError:
+    from dbutils.pooled_db import PooledDB
 
 class DataBaseOperate(object):
 

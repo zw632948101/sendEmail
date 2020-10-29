@@ -14,8 +14,9 @@ class DataAggregate(object):
 
     def __key_suit(self):
         for i in self.__operate_list_dict:
-            for j in i:
-                self.__tmp_date.add(j.get(self.__key))
+            if i is not None:
+                for j in i:
+                    self.__tmp_date.add(j.get(self.__key))
         try:
             self.__tmp_date.remove(None)
         except KeyError:
@@ -34,12 +35,12 @@ class DataAggregate(object):
             self.__result.append({self.__key: self.__tmp_date[i]})
 
             for j in self.__operate_list_dict:
-
-                for k in j:
-                    if self.__tmp_date[i] == k.get(self.__key):
-                        self.__result[i].update(k)
-                        del self.__operate_list_dict[self.__operate_list_dict.index(j)][j.index(k)]
-                        break
+                if j is not None:
+                    for k in j:
+                        if self.__tmp_date[i] == k.get(self.__key):
+                            self.__result[i].update(k)
+                            del self.__operate_list_dict[self.__operate_list_dict.index(j)][j.index(k)]
+                            break
 
     def get_aggregate_result(self, *operate_list_dict: list, key: str) -> list:
         if len(operate_list_dict) > 1:
