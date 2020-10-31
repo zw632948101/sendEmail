@@ -48,7 +48,7 @@ acquired_commodity_statistics: &acquired_commodity_statistics
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
       - wenci.zhang@worldfarm.com
-      - jianbin.wang@worldfarm.com
-      - fo.he@@worldfarm.com
+#      - jianbin.wang@worldfarm.com
+#      - fo.he@worldfarm.com
   sql_file:
     - acquired_commodity_statistics.sql
