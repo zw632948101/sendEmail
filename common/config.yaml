@@ -36,6 +36,7 @@ return_visit_statistics: &return_visit_statistics
 22:
   <<: *return_visit_statistics
 
+
 acquired_commodity_statistics: &acquired_commodity_statistics
   QA:
     <<: *initialValue
