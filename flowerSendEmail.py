@@ -39,7 +39,7 @@ class FlowerSendEmail(Config, sendEmail):
             self.L.debug("按照传入配置执行任务")
             cf_key = self.data.get(sys.argv[1])
         # if True:
-        #     cf_key = self.data.get("acquired_commodity_statistics")
+        #     cf_key = self.data.get("punch_card")
         else:
             self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
