@@ -1,7 +1,7 @@
 /*
 {"email_title":"追花族上下班打卡","statement_title":"每日上下班打卡统计","combine_label":"ClockInAndOutStatistics","combine":False,"combine_key":None}
 */
-SELECT a.real_name AS '姓名', a.contact_number AS '手机号', a.create_time AS '上班打卡', b.endtime AS '下班打卡', a.lng, a.lat
+SELECT a.real_name AS '姓名', a.contact_number AS '手机号', a.create_time AS '上班打卡', b.endtime AS '下班打卡', a.lng, a.lat, a.address AS '打卡地址'
 FROM (SELECT t.real_name,
              t.contact_number,
              CASE s.type
@@ -15,7 +15,8 @@ FROM (SELECT t.real_name,
              s.create_time,
              s.user_id,
              s.lng,
-             s.lat
+             s.lat,
+             s.address
       FROM `fc-bee`.t_bee_friend t,
            `fc-bee`.t_staff_trail s
       WHERE t.user_id = s.user_id
