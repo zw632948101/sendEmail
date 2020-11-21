@@ -67,9 +67,9 @@ punch_card: &punch_card
     receiver:
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
-      - wenci.zhang@worldfarm.com
-      - jianbin.wang@worldfarm.com
-      - fo.he@worldfarm.com
-      - qinhu.peng@worldfarm.com
+#      - wenci.zhang@worldfarm.com
+#      - jianbin.wang@worldfarm.com
+#      - fo.he@worldfarm.com
+#      - qinhu.peng@worldfarm.com
   sql_file:
     - punch_card.sql
