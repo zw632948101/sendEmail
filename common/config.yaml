@@ -53,6 +53,8 @@ acquired_commodity_statistics: &acquired_commodity_statistics
       - fo.he@worldfarm.com
   sql_file:
     - acquired_commodity_statistics.sql
+
+
 punch_card: &punch_card
   QA:
     <<: *initialValue
