@@ -161,8 +161,8 @@ class FlowerSendEmail(Config, sendEmail):
             self.db.close_db_pool()
             # 判断是否有跨库SQL语句，执行跨库SQL语句并以附表的形式合并
             if i.get("DBstatus"):
-                datalist = []
                 for dbl in i.get('DBlist'):
+                    datalist = []
                     datalist.append(queryData)
                     mysqldict = eval(self.config.get('MYSQL_DICT'))
                     self.db.creat_db_pool(mysqldict.get(dbl.get('DBname')))
