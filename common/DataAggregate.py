@@ -57,7 +57,7 @@ class DataAggregate(object):
             finally:
                 self.__result = []
 
-        self.__tmp_date = set()
+        self.__tmp_date = list()
         self.__operate_list_dict = list()
         self.__key = ""
         return self.__result
@@ -79,6 +79,22 @@ class DataAggregate(object):
         self.__operate_list_dict = list()
         self.__key = ""
         return self.__result
+
+    def Master_schedule_aggregate(self, operate_list_dict, key):
+        """
+        主附表合并
+        :param operate_list_dict: 第一个表为主表，第二个表为附表
+        :param key: 合并字段
+        :return:
+        """
+        result = []
+        list1, list2 = operate_list_dict
+        for l1 in list1:
+            for l2 in list2:
+                if l1.get(key) == l2.get(key):
+                    l1.update(l2)
+                    result.append(l1)
+        return result
 
     @staticmethod
     def valueNull(dt):

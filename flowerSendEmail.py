@@ -43,11 +43,11 @@ class FlowerSendEmail(Config, sendEmail):
         """
         sys.argv 直接取下标会抛下标越界异常
         """
-        if sys.argv[1] != '':
-            self.L.debug("按照传入配置执行任务")
-            cf_key = self.data.get(sys.argv[1])
-        # if True:
-        #     cf_key = self.data.get("AssetReleaseStatistics")
+        # if sys.argv[1] != '':
+        #     self.L.debug("按照传入配置执行任务")
+        #     cf_key = self.data.get(sys.argv[1])
+        if True:
+            cf_key = self.data.get("AssetReleaseStatisticsAll")
         else:
             self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
@@ -160,6 +160,7 @@ class FlowerSendEmail(Config, sendEmail):
             if i.get("DBstatus"):
                 datalist = []
                 for dbl in i.get('DBlist'):
+                    datalist.append(queryData)
                     mysqldict = eval(self.config.get('MYSQL_DICT'))
                     self.db.creat_db_pool(mysqldict.get(dbl.get('DBname')))
                     sql_key = dbl.get('db_key')
@@ -169,8 +170,7 @@ class FlowerSendEmail(Config, sendEmail):
                     else:
                         sql = dbl.get('sql').replace(dbl.get("replace"), "(%s)" % keyl[0])
                     datalist.append(self.db.query_data(sql=sql))
-                    datalist.append(queryData)
-                    queryData = DataAggregate().get_aggregate_result_copy(datalist, key=sql_key)
+                    queryData = DataAggregate().Master_schedule_aggregate(datalist, key=sql_key)
                     self.db.close_db_pool()
             content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
             df = pd.DataFrame(queryData)

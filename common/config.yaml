@@ -79,7 +79,6 @@ AssetReleaseStatistics: &AssetReleaseStatistics
     <<: *initialValue
     receiver:
       - wei.zhang@worldfarm.com
-      - wenci.zhang@worldfarm.com
   PROD:
     <<: *initialValue
     receiver:
@@ -88,3 +87,17 @@ AssetReleaseStatistics: &AssetReleaseStatistics
       - wenci.zhang@worldfarm.com
   sql_file:
     - Asset_release_statistics.sql
+
+AssetReleaseStatisticsAll: &AssetReleaseStatisticsAll
+  QA:
+    <<: *initialValue
+    receiver:
+      - wei.zhang@worldfarm.com
+  PROD:
+    <<: *initialValue
+    receiver:
+      - tong.zhang@worldfarm.com
+      - wei.zhang@worldfarm.com
+      - wenci.zhang@worldfarm.com
+  sql_file:
+    - Asset_release_statistics_all.sql
