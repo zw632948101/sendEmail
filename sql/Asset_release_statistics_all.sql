@@ -7,4 +7,4 @@ FROM `mp-asset`.t_asset_ledger_batch b,
 WHERE b.cur_owner_id = ba.user_id
   AND b.cur_owner_type = 3
   AND b.type = 30
-GROUP BY date_format(b.create_time, '%Y-%m-%d'),b.creator_id;
+GROUP BY date_format(b.create_time, '%Y-%m-%d'),b.cur_owner_id;

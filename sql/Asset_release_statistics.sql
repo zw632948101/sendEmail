@@ -8,4 +8,4 @@ WHERE TO_DAYS(b.create_time) = TO_DAYS(NOW())
   AND b.cur_owner_id = ba.user_id
   AND b.cur_owner_type = 3
   AND b.type = 30
-GROUP BY b.creator_id;
+GROUP BY b.cur_owner_id;
