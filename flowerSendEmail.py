@@ -101,6 +101,7 @@ class FlowerSendEmail(Config, sendEmail):
                 remak_dict, sqlstr = sqlinfo.rsplit('*/')
                 remak_dict = eval(remak_dict)
                 remak_dict['sql'] = [i + ';' for i in sqlstr.rsplit(';')][:-1]
+                # 检查是否有跨库查询，将需要跨库的SQL注入到字典中
                 if remak_dict.get('DBstatus'):
                     db_list = []
                     for dbl in remak_dict.get('DBlist'):
@@ -134,6 +135,7 @@ class FlowerSendEmail(Config, sendEmail):
         for i in sql_dict:
             # 判断字典内sql列表长度是否大于1
             queryData = []
+            # 检查是否需要指定数据库，DBname为false链接默认数据库
             if i.get('DBname'):
                 mysqldict = eval(self.config.get('MYSQL_DICT'))
                 self.db.creat_db_pool(mysqldict.get(i.get('DBname')))
@@ -157,6 +159,7 @@ class FlowerSendEmail(Config, sendEmail):
             else:  # 字典内sql列表长度等于1，查询结果直接处理
                 queryData = self.db.query_data(i.get('sql')[0])
             self.db.close_db_pool()
+            # 判断是否有跨库SQL语句，执行跨库SQL语句并以附表的形式合并
             if i.get("DBstatus"):
                 datalist = []
                 for dbl in i.get('DBlist'):
