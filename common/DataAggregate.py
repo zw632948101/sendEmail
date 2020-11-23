@@ -1,3 +1,5 @@
+from random import sample
+
 from common.Log import Log
 
 
@@ -99,3 +101,28 @@ class DataAggregate(object):
             for i in dt:
                 dictlist.append(func(i))
             return dictlist
+
+    @staticmethod
+    def data_assemble(key=None, parameters_ld=None, num=None):
+        """
+        用于组装sql查询数据，取出相同的值返回该值的列表
+        :param key:
+        :param parameters_ld: 数据源为list字典
+        :param num: 取出数据条数
+        :return:
+        """
+        return_data = []
+        if parameters_ld is None or num == 0:
+            return
+        # 判断num是否大于列表长度，小于时取列表长度
+        num = len(parameters_ld) if num is None or num >= len(parameters_ld) else num
+
+        if key:
+            for info in sample(parameters_ld, num):
+                if info.get(key):
+                    return_data.append(info.get(key))
+            if return_data:
+                return sorted(return_data)
+            else:
+                return []
+        return sample(parameters_ld, num)

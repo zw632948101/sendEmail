@@ -21,6 +21,14 @@ from datetime import datetime
 from common.Config import Config
 
 
+class SqlStatementOverrun(Exception):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        print("SQL数量超限，一个文件只能有一个SQL")
+
+
 class FlowerSendEmail(Config, sendEmail):
     def __init__(self):
         super(FlowerSendEmail, self).__init__(name='config')
@@ -39,7 +47,7 @@ class FlowerSendEmail(Config, sendEmail):
             self.L.debug("按照传入配置执行任务")
             cf_key = self.data.get(sys.argv[1])
         # if True:
-        #     cf_key = self.data.get("punch_card")
+        #     cf_key = self.data.get("AssetReleaseStatistics")
         else:
             self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
@@ -93,6 +101,16 @@ class FlowerSendEmail(Config, sendEmail):
                 remak_dict, sqlstr = sqlinfo.rsplit('*/')
                 remak_dict = eval(remak_dict)
                 remak_dict['sql'] = [i + ';' for i in sqlstr.rsplit(';')][:-1]
+                if remak_dict.get('DBstatus'):
+                    db_list = []
+                    for dbl in remak_dict.get('DBlist'):
+                        dblsql = open(self.abs_path + '/sql/substatements/' + dbl.get('sqlfile'), 'r', encoding='UTF-8').read()
+                        dblsql = [i + ';' for i in dblsql.rsplit(';')][:-1]
+                        if len(dblsql) > 1:
+                            raise SqlStatementOverrun
+                        dbl['sql'] = dblsql[0]
+                        db_list.append(dbl)
+                    remak_dict['DBlist'] = db_list
                 sql_list.append(remak_dict)
         return sql_list
 
@@ -104,6 +122,7 @@ class FlowerSendEmail(Config, sendEmail):
         """
         # 初始化变量
         self.del_file(self.abs_path + '/attachment/')
+
         content = ''
         Subject = ''
         # 将sql加入字典中
@@ -113,8 +132,11 @@ class FlowerSendEmail(Config, sendEmail):
             return
         # 循环list获取数据库返回数据
         for i in sql_dict:
-            # 判断字典内sql列表长度是否大于2
+            # 判断字典内sql列表长度是否大于1
             queryData = []
+            if i.get('DBname'):
+                mysqldict = eval(self.config.get('MYSQL_DICT'))
+                self.db.creat_db_pool(mysqldict.get(i.get('DBname')))
             if len(i.get('sql')) >= 2:
                 datalist = []
                 if i.get('combine'):  # sql列表长度大于2，判断combine为True，如果为true合并sql查询结果
@@ -134,6 +156,22 @@ class FlowerSendEmail(Config, sendEmail):
                         queryData.append(self.db.query_data(i.get('sql')[k]))
             else:  # 字典内sql列表长度等于1，查询结果直接处理
                 queryData = self.db.query_data(i.get('sql')[0])
+            self.db.close_db_pool()
+            if i.get("DBstatus"):
+                datalist = []
+                for dbl in i.get('DBlist'):
+                    mysqldict = eval(self.config.get('MYSQL_DICT'))
+                    self.db.creat_db_pool(mysqldict.get(dbl.get('DBname')))
+                    sql_key = dbl.get('db_key')
+                    keyl = DataAggregate.data_assemble(key=sql_key, parameters_ld=queryData)
+                    if len(keyl) > 1:
+                        sql = dbl.get('sql').replace(dbl.get("replace"), str(tuple(keyl)))
+                    else:
+                        sql = dbl.get('sql').replace(dbl.get("replace"), "(%s)" % keyl[0])
+                    datalist.append(self.db.query_data(sql=sql))
+                    datalist.append(queryData)
+                    queryData = DataAggregate().get_aggregate_result_copy(datalist, key=sql_key)
+                    self.db.close_db_pool()
             content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
             df = pd.DataFrame(queryData)
             df = df.fillna(value="")
@@ -144,7 +182,7 @@ class FlowerSendEmail(Config, sendEmail):
         # 调用发送邮件方法
         self.flower_send_message(
             content=content.replace('0.0</td>', '0</td>').replace('<td>NaN</td>', '<td></td>').replace('.0</td>',
-                                                                                                        '</td>'),
+                                                                                                       '</td>'),
             Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
     def read_files(self):
