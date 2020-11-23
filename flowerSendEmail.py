@@ -43,11 +43,11 @@ class FlowerSendEmail(Config, sendEmail):
         """
         sys.argv 直接取下标会抛下标越界异常
         """
-        # if sys.argv[1] != '':
-        #     self.L.debug("按照传入配置执行任务")
-        #     cf_key = self.data.get(sys.argv[1])
-        if True:
-            cf_key = self.data.get("AssetReleaseStatisticsAll")
+        if sys.argv[1] != '':
+            self.L.debug("按照传入配置执行任务")
+            cf_key = self.data.get(sys.argv[1])
+        # if True:
+        #     cf_key = self.data.get("AssetReleaseStatisticsAll")
         else:
             self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
