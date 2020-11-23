@@ -36,4 +36,5 @@ FROM (SELECT t.real_name,
         AND TO_DAYS(create_time) = TO_DAYS(NOW()) - 1
       GROUP BY user_id) b
      ON a.user_id = b.user_id
-         LEFT OUTER JOIN `fc-bee`.t_user_role tu ON a.user_id = tu.user_id AND tu.is_delete = 0 AND tu.role_code IN (1004, 1005, 1006, 1007);
+         LEFT OUTER JOIN `fc-bee`.t_user_role tu ON a.user_id = tu.user_id AND tu.is_delete = 0 AND tu.role_code IN (1004, 1005, 1006, 1007)
+ORDER BY a.create_time DESC;
