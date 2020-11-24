@@ -85,6 +85,8 @@ AssetReleaseStatistics: &AssetReleaseStatistics
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
       - wenci.zhang@worldfarm.com
+      - jianbin.wang@worldfarm.com
+      - fo.he@worldfarm.com
   sql_file:
     - Asset_release_statistics.sql
 
@@ -99,5 +101,7 @@ AssetReleaseStatisticsAll: &AssetReleaseStatisticsAll
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
       - wenci.zhang@worldfarm.com
+      - jianbin.wang@worldfarm.com
+      - fo.he@worldfarm.com
   sql_file:
     - Asset_release_statistics_all.sql
