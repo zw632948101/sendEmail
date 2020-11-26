@@ -47,7 +47,7 @@ class FlowerSendEmail(Config, sendEmail):
             self.L.debug("按照传入配置执行任务")
             cf_key = self.data.get(sys.argv[1])
         # if True:
-        #     cf_key = self.data.get("AssetReleaseStatisticsAll")
+        #     cf_key = self.data.get("AssetReleaseStatistics")
         else:
             self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
@@ -160,7 +160,7 @@ class FlowerSendEmail(Config, sendEmail):
                 queryData = self.db.query_data(i.get('sql')[0])
             self.db.close_db_pool()
             # 判断是否有跨库SQL语句，执行跨库SQL语句并以附表的形式合并
-            if i.get("DBstatus"):
+            if i.get("DBstatus") and queryData:
                 for dbl in i.get('DBlist'):
                     datalist = []
                     datalist.append(queryData)
