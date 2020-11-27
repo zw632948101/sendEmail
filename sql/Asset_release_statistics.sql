@@ -8,6 +8,8 @@ WHERE TO_DAYS(b.create_time) = TO_DAYS(NOW())
   AND b.cur_owner_id = ba.user_id
   AND b.cur_owner_type = 3
   AND b.type = 30
+  AND b.is_delete = 0
+  AND ba.is_delete = 0
 GROUP BY b.cur_owner_id;
 
 /*
@@ -19,4 +21,6 @@ FROM `mp-asset`.t_asset_ledger_batch b,
 WHERE b.cur_owner_id = ba.user_id
   AND b.cur_owner_type = 3
   AND b.type = 30
+  AND b.is_delete = 0
+  AND ba.is_delete = 0
 GROUP BY date_format(b.create_time, '%Y-%m-%d'),b.cur_owner_id;
