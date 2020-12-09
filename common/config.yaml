@@ -85,6 +85,7 @@ AssetReleaseStatistics: &AssetReleaseStatistics
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
       - wenci.zhang@worldfarm.com
+      - shichao.he@worldfarm.com
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
   sql_file:
@@ -100,6 +101,7 @@ AssetReleaseStatisticsAll: &AssetReleaseStatisticsAll
     receiver:
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
+      - shichao.he@worldfarm.com
       - wenci.zhang@worldfarm.com
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
@@ -115,6 +117,7 @@ AssetReleasefafang: &AssetReleasefafang
     receiver:
       - tong.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
+      - shichao.he@worldfarm.com
       - wenci.zhang@worldfarm.com
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
