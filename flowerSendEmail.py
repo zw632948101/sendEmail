@@ -43,11 +43,11 @@ class FlowerSendEmail(Config, sendEmail):
         """
         sys.argv 直接取下标会抛下标越界异常
         """
-        if sys.argv[1] != '':
+        if sys.argv[1] != '':  # 线上使用
             self.L.debug("按照传入配置执行任务")
             cf_key = self.data.get(sys.argv[1])
-        # if True:
-        #     cf_key = self.data.get("AssetReleaseStatistics")
+        # if True: # 调试使用
+        #     cf_key = self.data.get("AssetReleasefafang")
         else:
             self.L.debug("按照时间执行任务")
             cf_key = self.data.get(datetime.now().hour)
@@ -105,7 +105,8 @@ class FlowerSendEmail(Config, sendEmail):
                 if remak_dict.get('DBstatus'):
                     db_list = []
                     for dbl in remak_dict.get('DBlist'):
-                        dblsql = open(self.abs_path + '/sql/substatements/' + dbl.get('sqlfile'), 'r', encoding='UTF-8').read()
+                        dblsql = open(self.abs_path + '/sql/substatements/' + dbl.get('sqlfile'),
+                                      'r', encoding='UTF-8').read()
                         dblsql = [i + ';' for i in dblsql.rsplit(';')][:-1]
                         if len(dblsql) > 1:
                             raise SqlStatementOverrun
@@ -145,7 +146,8 @@ class FlowerSendEmail(Config, sendEmail):
                     if i.get('combine_key'):  # 判断有么有合并key，有使用key合并数据
                         for k in range(len(i.get('sql'))):
                             datalist.append(self.db.query_data(i.get('sql')[k]))
-                        queryData = DataAggregate().get_aggregate_result_copy(datalist, key=i.get('combine_key'))
+                        queryData = DataAggregate().get_aggregate_result_copy(datalist, key=i.get(
+                            'combine_key'))
                     else:  # 没有combine_key或为空，直接合并
                         for k in range(len(i.get('sql'))):
                             datalist.append(self.db.query_data(i.get('sql')[k]))
@@ -180,12 +182,14 @@ class FlowerSendEmail(Config, sendEmail):
             df = df.fillna(value="")
             content += df.to_html()
             df.to_excel(
-                self.abs_path + '/attachment/' + i.get('statement_title') + datetime.strftime(datetime.now(), '%Y-%m-%d') + '.xlsx')
+                self.abs_path + '/attachment/' + i.get('statement_title') + datetime.strftime(
+                    datetime.now(), '%Y-%m-%d') + '.xlsx')
             Subject = i.get('email_title')
         # 调用发送邮件方法
         self.flower_send_message(
-            content=content.replace('0.0</td>', '0</td>').replace('<td>NaN</td>', '<td></td>').replace('.0</td>',
-                                                                                                       '</td>'),
+            content=content.replace('0.0</td>', '0</td>').replace('<td>NaN</td>',
+                                                                  '<td></td>').replace('.0</td>',
+                                                                                       '</td>'),
             Subject="[%s] %s" % (datetime.strftime(datetime.now(), '%Y-%m-%d'), Subject))
 
     def read_files(self):

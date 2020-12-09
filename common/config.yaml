@@ -105,3 +105,18 @@ AssetReleaseStatisticsAll: &AssetReleaseStatisticsAll
       - fo.he@worldfarm.com
   sql_file:
     - Asset_release_statistics_all.sql
+AssetReleasefafang: &AssetReleasefafang
+  QA:
+    <<: *initialValue
+    receiver:
+      - wei.zhang@worldfarm.com
+  PROD:
+    <<: *initialValue
+    receiver:
+      - tong.zhang@worldfarm.com
+      - wei.zhang@worldfarm.com
+      - wenci.zhang@worldfarm.com
+      - jianbin.wang@worldfarm.com
+      - fo.he@worldfarm.com
+  sql_file:
+    - asset_release_fafang.sql
