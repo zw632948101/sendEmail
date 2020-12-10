@@ -46,7 +46,7 @@ FROM (SELECT uu.name, uu.phone, SUM(aa.number) AS NUMBER, aa.cur_owner_id
       GROUP BY last_owner_id) ah
      ON ah.last_owner_id = af.cur_owner_id;
 /*
-{"email_title":"每日箱回收统计","statement_title":"浅继箱回收汇总","combine_label":"assetRelease","combine":False,"combine_key":None,"DBname":"mp","DBstatus":False,"DBlist":[]}
+{"email_title":"每日箱回收统计","statement_title":"浅继箱回收历史","combine_label":"assetRelease","combine":False,"combine_key":None,"DBname":"mp","DBstatus":False,"DBlist":[]}
 */
 SELECT a.create_time as '回收时间',u.`name` as '蜂友姓名',u.phone as '蜂友电话',count(l.id) as '回收数量/箱',
 SUM(l.weight)/1000 as '回收重量/kg',(SUM(l.weight)-SUM(l.last_weight))/1000 as '回收蜜重/kg',u1.`name` as '操作人',a.address as '蜂场位置'
