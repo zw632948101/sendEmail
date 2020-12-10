@@ -45,3 +45,12 @@ FROM (SELECT uu.name, uu.phone, SUM(aa.number) AS NUMBER, aa.cur_owner_id
         AND is_delete = 0
       GROUP BY last_owner_id) ah
      ON ah.last_owner_id = af.cur_owner_id;
+/*
+{"email_title":"每日箱回收统计","statement_title":"浅继箱回收汇总","combine_label":"assetRelease","combine":False,"combine_key":None,"DBname":"mp","DBstatus":False,"DBlist":[]}
+*/
+SELECT a.create_time as '回收时间',u.`name` as '蜂友姓名',u.phone as '蜂友电话',count(l.id) as '回收数量/箱',
+SUM(l.weight)/1000 as '回收重量/kg',(SUM(l.weight)-SUM(l.last_weight))/1000 as '回收蜜重/kg',u1.`name` as '操作人',a.address as '蜂场位置'
+FROM `mp-asset`.t_asset_ledger_batch a,`mp-asset`.t_user_base u,`mp-asset`.t_asset_ledger l,`mp-asset`.t_user_base u1
+WHERE a.type=30 AND a.cur_owner_type=2 AND a.last_owner_type=3 AND u.user_id=a.last_owner_id AND a.is_delete=0 AND l.is_delete=0
+AND l.ledger_batch_id=a.id AND u1.user_id=a.creator_id
+GROUP BY a.last_owner_id;
