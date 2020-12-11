@@ -72,7 +72,7 @@ SELECT
 	ccc.all_number AS '累积回收浅继箱数',
 	ccc.all_weight AS '累积回收重量',
 	ccc.weight_mi_all AS '累积回收蜜重',
-	( ccc.weight_mi_all / ccc.all_number ) AS '平均每箱重量',
+	FORMAT( ccc.weight_mi_all / ccc.all_number, 2 ) AS '平均每箱重量',
 	( aaa.number_all_fa - IFNULL( ccc.all_number, 0 ) ) AS '待回收数量'
 FROM
 	(
@@ -96,6 +96,7 @@ WHERE
 	AND b.type = 30
 	AND b.is_delete = 0
 	AND b.last_owner_type = 2
+	AND ba.is_delete = 0
 GROUP BY
 	b.cur_owner_id
 	) aa
@@ -132,10 +133,10 @@ FROM
 WHERE
 	a.type = 30
 	AND a.cur_owner_type = 2
-	AND a.last_owner_type = 3
+	AND a.last_owner_type = 3 
 	AND a.is_delete = 0
 	AND l.is_delete = 0
-	AND l.ledger_batch_id = a.id 
+	AND l.ledger_batch_id = a.id
 GROUP BY
 	a.last_owner_id
 	) ccc ON ccc.last_owner_id = aaa.cur_owner_id;
