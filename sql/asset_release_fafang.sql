@@ -53,4 +53,5 @@ SUM(l.weight)/1000 as '回收重量/kg',(SUM(l.weight)-SUM(l.last_weight))/1000 
 FROM `mp-asset`.t_asset_ledger_batch a,`mp-asset`.t_user_base u,`mp-asset`.t_asset_ledger l,`mp-asset`.t_user_base u1
 WHERE a.type=30 AND a.cur_owner_type=2 AND a.last_owner_type=3 AND u.user_id=a.last_owner_id AND a.is_delete=0 AND l.is_delete=0
 AND l.ledger_batch_id=a.id AND u1.user_id=a.creator_id
-GROUP BY a.last_owner_id;
+GROUP BY a.create_time
+ORDER BY a.create_time DESC;
