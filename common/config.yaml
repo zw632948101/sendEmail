@@ -121,5 +121,6 @@ AssetReleasefafang: &AssetReleasefafang
       - wenci.zhang@worldfarm.com
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
+      - qiuming.yang@worldfarm.com
   sql_file:
     - asset_release_fafang.sql
