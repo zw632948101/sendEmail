@@ -13,7 +13,6 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from common.Log import Log
-import pandas as pd
 from email.utils import formataddr
 from email.header import Header
 import os
@@ -57,17 +56,3 @@ class sendEmail():
             self.L.info("发送邮件结束")
         finally:
             pass
-
-    # def send_flowers_collection_statistics(self):
-    #     self.send_message(datalist=self.flowers_collection_statistics,
-    #                       Subject="每日采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
-    #
-    #     self.send_message(datalist=self.flowers_statistics,
-    #                       Subject="累计采集统计 [%s]" % datetime.strftime(datetime.now(), '%Y-%m-%d'))
-
-# def query():
-#     test = sendEmail()
-#     test.send_flowers_collection_statistics()
-#
-#
-# query()

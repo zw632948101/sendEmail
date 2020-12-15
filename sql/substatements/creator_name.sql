@@ -1,1 +1,1 @@
-SELECT tb.user_id AS '操作人',tb.real_name AS '操作人姓名' FROM `fc-bee`.t_bee_friend tb WHERE tb.user_id in creator_id;
+SELECT tb.user_id AS '操作人',tb.real_name AS '操作人姓名' FROM `fc-bee`.t_bee_friend tb WHERE tb.user_id in 操作人list;

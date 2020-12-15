@@ -8,7 +8,6 @@ __author__: wei.zhang
  @Software : PyCharm
 """
 import os
-
 import yaml
 
 
