@@ -2,7 +2,7 @@
 {"email_title":"追花族采集统计","statement_title":"每日采集统计","combine_label":"daily_statistics","combine":True,"combine_key":"联系方式"}
 */
 SELECT
-       date_format(now(), '%Y-%m-%d')                               AS '采集日期1',
+       date_format(now(), '%Y-%m-%d')                               AS '采集日期',
        ctbf.real_name                                               AS '采集人',
        ctbf.contact_number                                          AS '联系方式',
        count(DISTINCT (tsi.id))                                     AS '采集蜂场数量',
