@@ -139,10 +139,14 @@ class dataProcessing(Config):
             """
             for k in keys:
                 keyl = []
-                for parameters in queryData:
-                    keyl = DataAggregate.data_assemble(key=k.get("Value"), parameters_ld=parameters)
-                    if keyl != []:
-                        break
+                if isinstance(queryData[0], list):
+                    for parameters in queryData:
+                        keyl = DataAggregate.data_assemble(key=k.get("Value"),
+                                                           parameters_ld=parameters)
+                        if keyl != []:
+                            break
+                else:
+                    keyl = DataAggregate.data_assemble(key=k.get("Value"), parameters_ld=queryData)
                 if len(keyl) > 1:
                     sql = sql.replace(k.get("replace"), str(tuple(keyl)))
                 else:
