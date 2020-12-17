@@ -9,8 +9,8 @@ collecting_statistics: &collecting_statistics
   PROD:
     <<: *initialValue
     receiver:
-      - xinran.liang@worldfarm.com
-      - wenci.zhang@worldfarm.com
+#      - wenci.zhang@worldfarm.com
+      - wei.zhang@worldfarm.com
   sql_file:
     - flowerSQL.sql
 
