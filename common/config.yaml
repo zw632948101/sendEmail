@@ -86,6 +86,7 @@ AssetReleaseStatistics: &AssetReleaseStatistics
       - shichao.he@worldfarm.com
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
+      - haodong.xian@worldfarm.com
   sql_file:
     - Asset_release_statistics.sql
 
@@ -103,6 +104,7 @@ AssetReleaseStatisticsAll: &AssetReleaseStatisticsAll
       - wenci.zhang@worldfarm.com
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
+      - haodong.xian@worldfarm.com
   sql_file:
     - Asset_release_statistics_all.sql
 AssetReleasefafang: &AssetReleasefafang
@@ -120,5 +122,6 @@ AssetReleasefafang: &AssetReleasefafang
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
       - qiuming.yang@worldfarm.com
+      - haodong.xian@worldfarm.com
   sql_file:
     - asset_release_fafang.sql
