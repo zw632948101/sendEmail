@@ -64,4 +64,5 @@ WHERE b.cur_owner_id = ba.user_id
   AND b.cur_owner_type = 3
   AND b.type = 30
   AND b.creator_id = ba1.user_id
+  AND b.is_delete=0
 GROUP BY b.create_time;
