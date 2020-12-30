@@ -191,5 +191,7 @@ class dataProcessing(Config):
                     vd = [result.update(i) for i in vd]
                     datalist = vd
                     viceData = [datalist]
+            if not sql_dict.get('LORD_VICE_MERGE') and not sql_dict.get('VICE_MERGE'):
+                datalist = self.db.query_data(sql=sql)
         self.db.close_db_pool()
         return datalist

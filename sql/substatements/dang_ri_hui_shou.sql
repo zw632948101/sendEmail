@@ -24,8 +24,7 @@ FROM (SELECT ra2.*, rf2.*
                            LEFT OUTER JOIN
                        (SELECT sum(number) AS recover_quanfenggai, last_owner_id AS last_id
                         FROM `mp-asset`.t_asset_ledger_batch
-                        WHERE relation_no IN
-                            relation_no_list1
+                        WHERE relation_no IN relation_no_list1
                             AND is_delete = 0
                             AND TO_DAYS(create_time) = TO_DAYS(NOW())
                         GROUP BY last_owner_id) rf
@@ -33,8 +32,7 @@ FROM (SELECT ra2.*, rf2.*
                      LEFT OUTER JOIN
                  (SELECT sum(number) AS recover_banfenggai, last_owner_id AS ban_id
                   FROM `mp-asset`.t_asset_ledger_batch
-                  WHERE relation_no IN
-                      relation_no_list2
+                  WHERE relation_no IN relation_no_list2
                       AND is_delete = 0
                       AND TO_DAYS(create_time) = TO_DAYS(NOW())
                   GROUP BY last_owner_id) rf1

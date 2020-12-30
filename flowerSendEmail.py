@@ -49,6 +49,7 @@ class FlowerSendEmail(dataProcessing, sendEmail, FileOperating):
             return
         # 循环list获取数据库返回数据
         for i in sql_dict:
+            self.L.info("执行SQL："+i.get('statement_title'))
             queryData = self.assembly_lord_data(sql_dict=i)
             if i.get("DBstatus") and queryData:
                 queryData = self.assembly_vice_data(sql_dict=i, queryData=queryData)

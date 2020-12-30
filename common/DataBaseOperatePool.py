@@ -46,6 +46,7 @@ class DataBaseOperate(object):
         con = self.__db_pool.connection()
         cursor = con.cursor(cursor=pymysql.cursors.DictCursor)
         try:
+            self.__log.error(sql)
             cursor.execute(sql)
             results = cursor.fetchall()
             self.__log.debug(results)
