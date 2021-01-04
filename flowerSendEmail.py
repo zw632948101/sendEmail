@@ -76,9 +76,9 @@ class FlowerSendEmail(dataProcessing, sendEmail, FileOperating):
 if __name__ == '__main__':
     try:
         if sys.argv[1] != '':  # 线上使用
-            cf_key = sys.argv[1]
+            _cf_key = sys.argv[1]
         else:
-            cf_key = None
+            _cf_key = None
     except IndexError as e:
-        cf_key = None
-    f = FlowerSendEmail(cf_key)
+        _cf_key = None
+    f = FlowerSendEmail(_cf_key)

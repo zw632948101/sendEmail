@@ -125,3 +125,22 @@ AssetReleasefafang: &AssetReleasefafang
       - haodong.xian@worldfarm.com
   sql_file:
     - asset_release_fafang.sql
+
+statisticsziyingfengcheng: &statisticsziyingfengcheng
+  QA:
+    <<: *initialValue
+    receiver:
+      - wei.zhang@worldfarm.com
+  PROD:
+    <<: *initialValue
+    receiver:
+      - tong.zhang@worldfarm.com
+      - wei.zhang@worldfarm.com
+      - shichao.he@worldfarm.com
+      - wenci.zhang@worldfarm.com
+      - jianbin.wang@worldfarm.com
+      - fo.he@worldfarm.com
+      - qiuming.yang@worldfarm.com
+      - haodong.xian@worldfarm.com
+  sql_file:
+    - statistics_ziyingfengchang.sql
