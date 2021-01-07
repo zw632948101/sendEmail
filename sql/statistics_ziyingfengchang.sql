@@ -53,4 +53,5 @@ WHERE h.is_delete = 0
   AND r.id = o.province
   AND r1.id = o.city
   AND r2.id = o.county
-GROUP BY serial_no;
+GROUP BY serial_no
+ORDER BY o.operate_time DESC;
