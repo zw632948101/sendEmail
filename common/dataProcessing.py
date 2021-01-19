@@ -4,7 +4,7 @@
 # @Author: wei.zhang
 # @File : dataProcessing.py
 # @Software: PyCharm
-
+import json
 import os
 import shutil
 from common.Log import Log
@@ -95,7 +95,7 @@ class dataProcessing(Config):
         :return:
         """
         if sql_dict.get('DBname'):
-            mysqldict = eval(self.config.get('MYSQL_DICT'))
+            mysqldict = json.loads(self.config.get('MYSQL_DICT'))
             self.db.creat_db_pool(mysqldict.get(sql_dict.get('DBname')))
         queryData = []
         if len(sql_dict.get('sql')) >= 2:
@@ -159,7 +159,7 @@ class dataProcessing(Config):
             viceData.append(queryData)
         for dbc in sql_dict.get('DBlist'):  # 循环遍历需要查询的副表SQL列表
             db_key = dbc.get('db_key')
-            mysqldict = eval(self.config.get('MYSQL_DICT'))
+            mysqldict = json.loads(self.config.get('MYSQL_DICT'))
             self.db.creat_db_pool(mysqldict.get(dbc.get('DBname')))
             sql = dbc.get('sql')
             sql = replacekey(sql, db_key)
