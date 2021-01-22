@@ -56,7 +56,8 @@ class FlowerSendEmail(dataProcessing, sendEmail, FileOperating):
             content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
             df = pd.DataFrame(queryData)
             df = df.fillna(value="")
-            df = df.sort_values(by='今日采集蜂友数',ascending=False)
+            if i.get('statement_title') == "每日采集蜂友统计":
+                df = df.sort_values(by='今日采集蜂友数',ascending=False)
             content += df.to_html()
             df.to_excel(
                 self.abs_path + '/attachment/' + i.get('statement_title') + datetime.strftime(
