@@ -143,3 +143,20 @@ statisticsziyingfengcheng: &statisticsziyingfengcheng
       - yuping.dai@worldfarm.com
   sql_file:
     - statistics_ziyingfengchang.sql
+
+collectionFriendSwarmInfoStististics: &collectionFriendSwarmInfoStististics
+  QA:
+    <<: *initialValue
+    receiver:
+      - wei.zhang@worldfarm.com
+  PROD:
+    <<: *initialValue
+    receiver:
+      - tong.zhang@worldfarm.com
+      - wei.zhang@worldfarm.com
+      - shichao.he@worldfarm.com
+      - wenci.zhang@worldfarm.com
+      - jianbin.wang@worldfarm.com
+      - jiangwei.huang@worldfarm.com
+  sql_file:
+    - collection_friend_swarm_info_stististics.sql

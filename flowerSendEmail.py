@@ -56,6 +56,7 @@ class FlowerSendEmail(dataProcessing, sendEmail, FileOperating):
             content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
             df = pd.DataFrame(queryData)
             df = df.fillna(value="")
+            df = df.sort_values(by='今日采集蜂友数',ascending=False)
             content += df.to_html()
             df.to_excel(
                 self.abs_path + '/attachment/' + i.get('statement_title') + datetime.strftime(
@@ -80,5 +81,5 @@ if __name__ == '__main__':
         else:
             _cf_key = None
     except IndexError as e:
-        _cf_key = None
+        _cf_key = 'collectionFriendSwarmInfoStististics'
     f = FlowerSendEmail(_cf_key)
