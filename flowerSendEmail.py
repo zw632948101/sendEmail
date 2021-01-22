@@ -49,7 +49,7 @@ class FlowerSendEmail(dataProcessing, sendEmail, FileOperating):
             return
         # 循环list获取数据库返回数据
         for i in sql_dict:
-            self.L.info("执行SQL："+i.get('statement_title'))
+            self.L.info("执行SQL：" + i.get('statement_title'))
             queryData = self.assembly_lord_data(sql_dict=i)
             if i.get("DBstatus") and queryData:
                 queryData = self.assembly_vice_data(sql_dict=i, queryData=queryData)
@@ -57,7 +57,11 @@ class FlowerSendEmail(dataProcessing, sendEmail, FileOperating):
             df = pd.DataFrame(queryData)
             df = df.fillna(value="")
             if i.get('statement_title') == "每日采集蜂友统计":
-                df = df.sort_values(by='今日采集蜂友数',ascending=False)
+                order = ['采集人', '采集日期', '采集人电话', '今日采集蜂友数', '今日采集蜂场数', '今日采蜂友场登录数',
+                         '今日采集蜂场登录数', '开始采集时间', '结束采集时间', '推广蜂友天气设定人数', '推广蜂友发布蜂友互助的数量_人',
+                         '推广蜂友发布蜂友互助的数量_条数', '1月20日后采集蜂友数', '1月20日后采集蜂场数']
+                df = df.sort_values(by='今日采集蜂友数', ascending=False)
+                df = df[order]
             content += df.to_html()
             df.to_excel(
                 self.abs_path + '/attachment/' + i.get('statement_title') + datetime.strftime(
