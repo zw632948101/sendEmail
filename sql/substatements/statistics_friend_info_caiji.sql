@@ -1,4 +1,5 @@
-SELECT date_format(now(), '%Y-%m-%d')                                                                  AS '采集日期',
+SELECT *
+FROM (SELECT date_format(now(), '%Y-%m-%d')                                                                  AS '采集日期',
        ctbf.contact_number                                                                             AS '采集人电话',
        ctbf.real_name                                                                                  AS '采集人',
        count(if(to_days(tbf.create_time) = to_days(now()) AND tbf.creator_id = ctbf.user_id, 1, NULL)) AS '今日采集蜂友数',
@@ -18,4 +19,5 @@ FROM `fc-bee`.t_bee_friend tbf
          LEFT JOIN `fc-bee`.t_help_info thi ON thi.creator_id = ctbf.user_id AND to_days(thi.create_time) = to_days(now())
 WHERE tbf.is_delete = 0 AND ctbf.user_id IS NOT NULL
 GROUP BY tbf.creator_id
-ORDER BY count(if(to_days(tbf.create_time) = to_days(now()), 1, NULL)) DESC;
+ORDER BY count(if(to_days(tbf.create_time) = to_days(now()), 1, NULL)) DESC) t
+WHERE t.今日采集蜂友数 > 0;

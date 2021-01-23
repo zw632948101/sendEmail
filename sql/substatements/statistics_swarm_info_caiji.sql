@@ -1,4 +1,5 @@
-SELECT ctbf.real_name                                                                                  AS '采集人',
+SELECT *
+FROM (SELECT ctbf.real_name                                                                                  AS '采集人',
        date_format(min(if(to_days(tsi.create_time) = to_days(NOW()), tsi.create_time, NULL)), '%H:%i') AS '开始采集时间',
        date_format(max(if(to_days(tsi.create_time) = to_days(NOW()), tsi.create_time, NULL)), '%H:%i') AS '结束采集时间',
        count(if(to_days(tsi.create_time) = to_days(now()) AND tsi.creator_id = ctbf.user_id, 1, NULL)) AS '今日采集蜂场数',
@@ -13,4 +14,5 @@ FROM `fc-bee`.t_swarm_info tsi
                     GROUP BY tbf.user_id) ctbf ON tsi.creator_id = ctbf.user_id
 WHERE tsi.is_delete = 0 AND ctbf.user_id IS NOT NULL
 GROUP BY tsi.creator_id
-ORDER BY count(if(to_days(tsi.create_time) = to_days(now()), 1, NULL)) DESC;
+ORDER BY count(if(to_days(tsi.create_time) = to_days(now()), 1, NULL)) DESC) t
+WHERE t.今日采集蜂场数 > 0;

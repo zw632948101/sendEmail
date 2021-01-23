@@ -86,5 +86,5 @@ if __name__ == '__main__':
         else:
             _cf_key = None
     except IndexError as e:
-        _cf_key = None
+        _cf_key = 'collectionFriendSwarmInfoStististics'
     f = FlowerSendEmail(_cf_key)
