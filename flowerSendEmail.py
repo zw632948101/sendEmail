@@ -13,7 +13,7 @@ import pandas as pd
 from datetime import datetime
 from common.dataProcessing import dataProcessing
 from common.fileOperating import FileOperating
-
+from common.DataAggregate import DataAggregate
 
 class SqlStatementOverrun(Exception):
     def __init__(self):
@@ -55,7 +55,7 @@ class FlowerSendEmail(dataProcessing, sendEmail, FileOperating):
                 queryData = self.assembly_vice_data(sql_dict=i, queryData=queryData)
             content += '<br /><h3>%s</h3><br />' % i.get('statement_title')
             df = pd.DataFrame(queryData)
-            df = df.fillna(value="")
+            df = df.fillna(value=0)
             if i.get('statement_title') == "每日采集蜂友统计":
                 order = ['采集人', '采集日期', '采集人电话', '今日采集蜂友数', '今日采集蜂场数', '今日采蜂友场登录数',
                          '今日采集蜂场登录数', '开始采集时间', '结束采集时间', '推广蜂友天气设定人数', '推广蜂友发布蜂友互助的数量_人',
@@ -86,5 +86,5 @@ if __name__ == '__main__':
         else:
             _cf_key = None
     except IndexError as e:
-        _cf_key = 'collectionFriendSwarmInfoStististics'
+        _cf_key = None
     f = FlowerSendEmail(_cf_key)
