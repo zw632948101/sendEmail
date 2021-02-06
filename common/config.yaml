@@ -160,3 +160,15 @@ collectionFriendSwarmInfoStististics: &collectionFriendSwarmInfoStististics
       - jiangwei.huang@worldfarm.com
   sql_file:
     - collection_friend_swarm_info_stististics.sql
+invoiceandreceipt: &invoiceandreceipt
+  QA:
+    <<: *initialValue
+    receiver:
+      - wei.zhang@worldfarm.com
+  PROD:
+    <<: *initialValue
+    receiver:
+      - yilin.zhou@worldfarm.com
+      - wei.zhang@worldfarm.com
+  sql_file:
+    - mp_wms_invoice_and_receipt.sql

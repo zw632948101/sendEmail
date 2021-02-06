@@ -14,6 +14,17 @@ from itertools import chain
 from common.DataBaseOperatePool import DataBaseOperate
 from datetime import datetime
 from common.Config import Config
+from common.dataConversion import DataConversion as conversion
+
+
+def replace_data(sql_dict, queryData):
+    if sql_dict.get('CONFIG_FILE'):
+        config_name = sql_dict.get('CONFIG_FILE')
+        cf = Config(name=config_name).data
+        for i in sql_dict.get('CONFIG_KEY'):
+            queryData = conversion.replace_dict_value(replace_key=i, keep_dict=queryData,
+                                                      enumerate_dict=cf)
+    return queryData
 
 
 class SqlStatementOverrun(Exception):
@@ -103,22 +114,29 @@ class dataProcessing(Config):
             if sql_dict.get('combine'):  # sql列表长度大于2，判断combine为True，如果为true合并sql查询结果
                 if sql_dict.get('combine_key'):  # 判断有么有合并key，有使用key合并数据
                     for k in range(len(sql_dict.get('sql'))):
-                        datalist.append(self.db.query_data(sql_dict.get('sql')[k]))
+                        datal = replace_data(sql_dict=sql_dict,
+                                             queryData=self.db.query_data(sql_dict.get('sql')[k]))
+                        datalist.append(datal)
                     queryData = DataAggregate().get_aggregate_result_copy(datalist,
                                                                           key=sql_dict.get(
                                                                               'combine_key'))
                 else:  # 没有combine_key或为空，直接合并
                     for k in range(len(sql_dict.get('sql'))):
-                        datalist.append(self.db.query_data(sql_dict.get('sql')[k]))
+                        datal = replace_data(sql_dict=sql_dict,
+                                             queryData=self.db.query_data(sql_dict.get('sql')[k]))
+                        datalist.append(datal)
                     queryData = list(chain.from_iterable(datalist))
                     result = {}
                     [result.update(i) for i in queryData]
                     queryData = [result]
             else:  # 如果combine为False，不合并sql查询结果
                 for k in range(len(sql_dict.get('sql'))):
-                    queryData.append(self.db.query_data(sql_dict.get('sql')[k]))
+                    datal = replace_data(sql_dict=sql_dict,
+                                         queryData=self.db.query_data(sql_dict.get('sql')[k]))
+                    queryData.append(datal)
         else:  # 字典内sql列表长度等于1，查询结果直接处理
-            queryData = self.db.query_data(sql_dict.get('sql')[0])
+            queryData = replace_data(sql_dict=sql_dict,
+                                     queryData=self.db.query_data(sql_dict.get('sql')[0]))
         self.db.close_db_pool()
         return queryData
 
