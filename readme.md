@@ -1,63 +1,92 @@
-#### flowerSendEmail 文件使用方法
-+ 使用改文件直接写在flowerSQL.sql文件中写sql和备注，通过读取sql备注对sql返回数据进行拼装
+#### sendEmail 项目结构
+- sendEmail
+    - attachment  生成Excel文件存放路径
+    - common 封装公用功能目录
+    - config 执行配置存放文件
+    - fileDir 存放各种路径变量
+    - model  数据库模型
+    - my_email 封装的发送邮件方法
+    - sql   SQL相关文档存放路径
+        - config SQL配置文件，对应原来SQL文件中的备注
+        - dbDir 数据库存放地
+        - enumerate 枚举值存放路径，在枚举没有存在数据库的时候使用，yaml文件格式
+        - busuness 业务SQL文件存放路径，同一个文件如果存放多个SQL时需要注意，多条SQL必须是查询同一个数据库才行
+        - viceData 业务附属数据，在跨库查询是作为业务SQL的条件使用，或者跟业务数据进行合并使用
 #### flowerSQL.sql写sql规范
 + 注意：如果不按照规划编写，程序将不能执行，每条备注和sql一一对应，需要严格按照规范编写<br />
-1.备注写法<br />
- ```
-/*
-{
-    "email_title":"资产回收统计",
-    "statement_title":"浅继箱业务汇总",
-    "combine_label":"test",
-    "combine":"False",
-    "combine_key":None,
-    "LORD_VICE_MERGE":False,
-    "VICE_MERGE":True,
-    "DBname":"flower",
-    "DBstatus":True,
-    "DBlist":[
-        {
-            "DBname":"mp",
-            "sqlfile":"hui_shou_hui_zong.sql",
-            "db_key":[
-                {
-                    "Value":"product_no",
-                    "replace":"relation_no_list1"
-                },
-                {
-                    "Value":"product_no1",
-                    "replace":"relation_no_list2"
-                }
-            ],
-            "MERGE_KEY":"user_id"
-        },
-        {
-            "DBname":"flower",
-            "sqlfile":"shallow_check.sql",
-            "db_key":[
+1.sql写法
++ sql结尾时才能写分号且每条sql必须带分号结尾 ";"
+#### common下封装方法详解
+1. config.py 作为读取配置文件的封装
+2. DataAggregate.py 结果数据合并删除等操作
++ get_aggregate_result(operate_list_dict，key) 列表合并,operate_list_dict字段需要传二维列表，key作为合并字段，相同的key进行合并
++ Master_schedule_aggregate(operate_list_dict，key) 已废弃，跟上面相同，只能传两个列表进行合并
++ valueNull(dt) 删除字典中空值的key，可以是list和dict
++ data_assemble(key=None, parameters_ld=None, num=None),取字典中key相同的值，返回一个列表，parameters_ld只能是一维列表，num取值的数量
+3. DataBaseOperatePool 数据库连接
++ creat_db_pool(mysql) 创建数据库连接
++ query_data(sql) 执行SQL方法
++ close_db_pool() 关闭链接
+4.dataConversion 处理数据使用
++ replace_dict_value(replace_key, keep_dict, enumerate_dict) 根据入参替换值
+5.dataProcessing 整个项目的核心功能，全部处理数据逻辑全部在本类中
++ initialize_parameter() 获取执行配置、邮箱服务信息、数据库账户
++ assembly_receiver_data() 获取收件人列表
++ assembly_mapping_data() 处理枚举数据替换操作
++ _merge_data() 合并数据使用
++ assembly_lord_data() 处理数据的入口，处理业务数据
++ assembly_replace_data() 处理数据，用作替换SQL中条件
++ assembly_vice_data() 处理业务附属数据使用
+6. DBdataProcessing 初始化配置信息和查询配置功能
++ AssemblyConfig 该类作为初始化配置文件写入数据库使用
++ QuerySqliteData 查询数据库中配置使用
+7. FileOperating 读取文件的方法封装
+8. Log 日志打印封装
+#### config 目录
+1.config 执行配置写法
+"""
+initialValue: &initialValue
+  SMTP_HOST: smtp.exmail.qq.com 发送邮件服务
 
-            ],
-            "MERGE_KEY":"user_id"
-        }
-    ]
-}
-*/
- ```
-+ email_title：发送邮件的标题 
-+ statement_title：统计表的标题
-+ combine_label：(已遗弃)需要合并数据的标签，combine为True时将对相同标签的数据进行合并，注意同一个combine_label的combine_key必须相同
-+ combine：是否需要对返回数据进行合并，False不合并，True合并
-+ combine_key：合并数据使用的字段，如果数据需要合并但没有统一的key时combine_key值写为None
-+ DBname: 需要重新连接的数据库名称（flower：追花族，mp：中台，worldfarm：世界农场，base：基础数据如用户数据，agrrobot：硬件智能设备项目）
-+ DBstatus: 是否需要跨库查询True or False
-+ LORD_VICE_MERGE: 主表与副表合并，合并字段以MERGE_KEY相同进行合并
-+ VICE_MERGE: 副表合并，并且舍弃主表数据，合并字段以MERGE_KEY相同进行合并
-+ DBlist: 需要跨库查询的配置
-> + DBlist.DBname 需要重新连接的数据库名称，同上
-> + DBlist.sqlfile 跨库查询的SQL语句
-> + db_key 取值替换字段[{"Value":"取值字段","replace":"替换字段"},...]
-> + MERGE_KEY 合并字段以第一个表为主表进行合并，暂时只能支持两个表合并
-+ 注意：备注里面不能有(;)如果有分号程序将报错
-2.sql写法
-+ sql结尾时才能写分号且每条sql必须带分号结尾 
-3.跨库查询时区分主表与附表，附表查询语句放置substatements文件下
+collecting_statistics: &collecting_statistics
+  QA:
+    <<: *initialValue
+    receiver: 接收人邮箱
+      - wei.zhang@worldfarm.com
+  PROD:
+    <<: *initialValue
+    receiver:
+      - wei.zhang@worldfarm.com
+  SQL_CONFIG: daily_statistics_collection SQL配置文件名称
+"""
+##### sql 目录
+#### busuness和viceData 用作存放SQL语句文件使用
++ busuness作为业务SQL，为主要执行文件
++ viceData定位为业务复数数据，作为业务SQL的条件值出现，也可以跟业务数据进行合并
++ 注意 每条SQL结束都需要以;结尾
+#### sql config SQL执行配置文件
++ 主要注意结构,参考示例
+"""
+EMAIL_TITLE: "邮件标题"
+CONF_VERSION: 1 # 配置版本,修改SQL文件或配置文件需要向上增加,不然执行会拉取原来的配置进行查询数据
+BUSUNESS: # 业务数据，列表结构，可以添加n个
+  - TABLE_TITLE: "每日资产发放统计" # 表标题
+    SUB_BUSUNESS:
+      - MERGE: True # 是否合并 True合并 False 不合并，这里有两层用法；作为第一个出现时，只针对同一个文件中多个SQL查询数据进行合并；作为第二个时会执行两个操作，1.与第一个出现时相同，2.合并上一个出现的数据
+        MERGE_KEY: '操作人' # 合并字段，如果多个SQL合并必须保证数据中都有相同的字段
+        BUSUNESS_NAME: '每日资产发放统计' # 业务名称或者SQL文件的描述
+        BUSUNESS_SQL_FILE: creator_name.sql # SQL文件
+        BUSUNESS_VICE_MERGE: True # 是否与附属数据进行合并
+        BUSUNESS_VICE_MERGE_KEY: '操作人'
+        DB_NAME: "flower" # 执行查询的数据库
+        BUSUNESS_MAPPING: # 替换枚举值
+          - MAPPING_KEY: ['来源系统','单据类型']
+            MAPPING_FILE: mp_wms_document_type # 枚举文件，yaml
+        REPLACE_KEY: # 跨库查询时使用，获取附属数据进行条件值替换
+          - REPLACE_VALUE: "操作人list"
+            CONDITION_VALUE: "操作人"
+        VICE_DATA: # 附属数据配置
+          - DATA_DB_NAME: "mp"
+            DATA_NAME: '每日资产发放统计-蜂友蜂场数据查询'
+            DATA_SQL_FILE: daily_release_asset_bee_friend_data.sql
+"""

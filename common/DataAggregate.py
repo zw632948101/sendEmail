@@ -1,3 +1,9 @@
+#! /usr/bin/env python3
+# -*- coding: UTF-8 -*-
+# @Time:2020/11/23 09:55
+# @Author: wei.zhang
+# @File : DataAggregate.py
+# @Software: PyCharm
 from random import sample
 
 from common.Log import Log
@@ -41,7 +47,8 @@ class DataAggregate(object):
                     for k in j:
                         if self.__tmp_date[i] == k.get(self.__key):
                             self.__result[i].update(k)
-                            del self.__operate_list_dict[self.__operate_list_dict.index(j)][j.index(k)]
+                            del self.__operate_list_dict[self.__operate_list_dict.index(j)][
+                                j.index(k)]
                             break
 
     def get_aggregate_result(self, *operate_list_dict: list, key: str) -> list:
@@ -91,9 +98,11 @@ class DataAggregate(object):
         list1, list2 = operate_list_dict
         for l1 in list1:
             for l2 in list2:
+                if isinstance(l2, list):
+                    self.Master_schedule_aggregate([list1, l2])
                 if l1.get(key) == l2.get(key):
                     l1.update(l2)
-                    result.append(l1)
+                result.append(l1)
         return result
 
     @staticmethod

@@ -13,12 +13,18 @@ import yaml
 
 class Config(object):
 
-    def __init__(self, name, current_path=None):
-        self.name = name
+    def __init__(self):
+        super(Config, self).__init__()
+
+    def get_config(self, name, current_path=None):
         if current_path is None:
             current_path = os.path.dirname(os.path.abspath(__file__))
         with open(current_path + "/" + name + ".yaml", encoding='utf-8') as f:
-            self.data = yaml.safe_load(f)
+            data = yaml.safe_load(f)
+        return data
+
+    def env_conf(self):
+        return os.environ
 
     def get_yaml_dict(self, env_dict):
         env_dist = os.environ

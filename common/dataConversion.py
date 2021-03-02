@@ -1,12 +1,10 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
-
-"""
-__author__ = 'Heng Xin'
-__date__ = '2018/3/28'
-"""
-
-from random import sample, choices
+# @Time:2020/11/23 09:55
+# @Author: wei.zhang
+# @File : dataConversion.py
+# @Software: PyCharm
+from random import sample
 
 
 class DataConversion(object):
@@ -100,17 +98,21 @@ class DataConversion(object):
     def replace_dict_value(replace_key, keep_dict, enumerate_dict: dict):
         """
         根据传入参数替换字段中值
-        :param replace_key: 替换key
+        :param replace_key: 替换key,可以传list和str
         :param keep_dict: 需要替换的数据，list or dict,其他类型数据直接返回源数据
         :param dict enumerate_dict: 替换枚举数据，dict
         :return: keep_dict
         """
-        if isinstance(keep_dict, list):
-            _dl = []
-            for d in keep_dict:
-                d[replace_key] = enumerate_dict.get(d.get(replace_key))
-                _dl.append(d)
-            keep_dict = _dl
-        if isinstance(keep_dict, dict):
-            keep_dict[replace_key] = enumerate_dict.get(keep_dict.get(replace_key))
+        if isinstance(replace_key, str):
+            replace_key = [replace_key]
+        if isinstance(replace_key, list):
+            for rkey in replace_key:
+                if isinstance(keep_dict, list):
+                    _dl = []
+                    for d in keep_dict:
+                        d[rkey] = enumerate_dict.get(d.get(rkey))
+                        _dl.append(d)
+                    keep_dict = _dl
+                if isinstance(keep_dict, dict):
+                    keep_dict[rkey] = enumerate_dict.get(keep_dict.get(rkey))
         return keep_dict

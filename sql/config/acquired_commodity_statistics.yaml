@@ -1,0 +1,10 @@
+EMAIL_TITLE: "追花族每日收购商品统计"
+CONF_VERSION: 1
+BUSUNESS:
+  - TABLE_TITLE: "每日收购商品统计"
+    SUB_BUSUNESS:
+      - MERGE: False
+        MERGE_KEY: None
+        BUSUNESS_NAME: '每日收购商品统计'
+        BUSUNESS_SQL_FILE: punch_card.sql
+        DB_NAME: "flower"

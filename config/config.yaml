@@ -1,5 +1,5 @@
 initialValue: &initialValue
-  smtpHost: smtp.exmail.qq.com
+  SMTP_HOST: smtp.exmail.qq.com
 
 collecting_statistics: &collecting_statistics
   QA:
@@ -11,8 +11,7 @@ collecting_statistics: &collecting_statistics
     receiver:
       - wenci.zhang@worldfarm.com
       - wei.zhang@worldfarm.com
-  sql_file:
-    - flowerSQL.sql
+  SQL_CONFIG: daily_statistics_collection
 
 return_visit_statistics: &return_visit_statistics
   QA:
@@ -23,17 +22,7 @@ return_visit_statistics: &return_visit_statistics
     <<: *initialValue
     receiver:
       - wenci.zhang@worldfarm.com
-  sql_file:
-    - return_visit_statisticsSQL.sql
-20:
-  <<: *collecting_statistics
-
-23:
-  <<: *collecting_statistics
-
-22:
-  <<: *return_visit_statistics
-
+  SQL_CONFIG: daily_return_visit_list
 
 acquired_commodity_statistics: &acquired_commodity_statistics
   QA:
@@ -49,8 +38,7 @@ acquired_commodity_statistics: &acquired_commodity_statistics
       - wenci.zhang@worldfarm.com
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
-  sql_file:
-    - acquired_commodity_statistics.sql
+  SQL_CONFIG: acquired_commodity_statistics
 
 
 punch_card: &punch_card
@@ -69,8 +57,7 @@ punch_card: &punch_card
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
       - qinhu.peng@worldfarm.com
-  sql_file:
-    - punch_card.sql
+  SQL_CONFIG: ClockInAndOutStatistics
 
 AssetReleaseStatistics: &AssetReleaseStatistics
   QA:
@@ -87,26 +74,8 @@ AssetReleaseStatistics: &AssetReleaseStatistics
       - jianbin.wang@worldfarm.com
       - fo.he@worldfarm.com
       - haodong.xian@worldfarm.com
-  sql_file:
-    - Asset_release_statistics.sql
+  SQL_CONFIG: asset_issuance_statistics
 
-AssetReleaseStatisticsAll: &AssetReleaseStatisticsAll
-  QA:
-    <<: *initialValue
-    receiver:
-      - wei.zhang@worldfarm.com
-  PROD:
-    <<: *initialValue
-    receiver:
-      - tong.zhang@worldfarm.com
-      - wei.zhang@worldfarm.com
-      - shichao.he@worldfarm.com
-      - wenci.zhang@worldfarm.com
-      - jianbin.wang@worldfarm.com
-      - fo.he@worldfarm.com
-      - haodong.xian@worldfarm.com
-  sql_file:
-    - Asset_release_statistics_all.sql
 AssetReleasefafang: &AssetReleasefafang
   QA:
     <<: *initialValue
@@ -123,8 +92,7 @@ AssetReleasefafang: &AssetReleasefafang
       - fo.he@worldfarm.com
       - qiuming.yang@worldfarm.com
       - haodong.xian@worldfarm.com
-  sql_file:
-    - asset_release_fafang.sql
+  SQL_CONFIG: Asset_recovery_statistics
 
 statisticsziyingfengcheng: &statisticsziyingfengcheng
   QA:
@@ -141,8 +109,7 @@ statisticsziyingfengcheng: &statisticsziyingfengcheng
       - jianbin.wang@worldfarm.com
       - jiangwei.huang@worldfarm.com
       - yuping.dai@worldfarm.com
-  sql_file:
-    - statistics_ziyingfengchang.sql
+  SQL_CONFIG: statistics_ziying_fengchang
 
 collectionFriendSwarmInfoStististics: &collectionFriendSwarmInfoStististics
   QA:
@@ -158,8 +125,8 @@ collectionFriendSwarmInfoStististics: &collectionFriendSwarmInfoStististics
       - wenci.zhang@worldfarm.com
       - jianbin.wang@worldfarm.com
       - jiangwei.huang@worldfarm.com
-  sql_file:
-    - collection_friend_swarm_info_stististics.sql
+  SQL_CONFIG: collection_friend_swarm_info_stististics
+
 invoiceandreceipt: &invoiceandreceipt
   QA:
     <<: *initialValue
@@ -170,5 +137,4 @@ invoiceandreceipt: &invoiceandreceipt
     receiver:
       - yilin.zhou@worldfarm.com
       - wei.zhang@worldfarm.com
-  sql_file:
-    - mp_wms_invoice_and_receipt.sql
+  SQL_CONFIG: mp_wms_invoice_and_receipt

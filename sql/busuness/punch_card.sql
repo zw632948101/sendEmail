@@ -1,6 +1,4 @@
-/*
-{"email_title":"追花族上下班打卡","statement_title":"每日上下班打卡统计","combine_label":"ClockInAndOutStatistics","combine":False,"combine_key":None}
-*/
+-- 追花族上下班打卡 - 每日上下班打卡统计
 SELECT user_all1.real_name      AS '姓名',
        user_all1.value          AS '角色',
        user_all1.contact_number AS '手机号',

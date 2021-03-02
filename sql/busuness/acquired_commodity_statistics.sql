@@ -1,6 +1,4 @@
-/*
-{"email_title":"追花族每日收购商品统计","statement_title":"每日收购商品统计","combine_label":"add_up_statistics","combine":False,"combine_key":None}
-*/
+-- 追花族每日收购商品统计 - 每日收购商品统计
 SELECT purchase_date                                AS '收购日期',
        r.real_name                                  AS '蜂友姓名',
        co.value                                     AS '纯度',

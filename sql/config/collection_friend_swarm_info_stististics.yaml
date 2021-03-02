@@ -1,0 +1,20 @@
+EMAIL_TITLE: "每日采集蜂友统计"
+CONF_VERSION: 1
+BUSUNESS:
+  - TABLE_TITLE: "每日采集蜂友蜂场统计"
+    SUB_BUSUNESS:
+      - MERGE: True
+        MERGE_KEY: '采集人'
+        BUSUNESS_NAME: '每日采集蜂友统计'
+        BUSUNESS_SQL_FILE: collection_friend_swarm_info_stististics.sql
+        DB_NAME: "flower"
+        BUSUNESS_MAPPING:
+          - MAPPING_KEY: None
+            MAPPING_FILE: None
+        REPLACE_KEY:
+          - REPLACE_VALUE: "login_userid"
+            CONDITION_VALUE: "user_id"
+        VICE_DATA:
+          - DATA_DB_NAME: "base"
+            DATA_NAME: '每日采集蜂友统计-每日登陆数据'
+            DATA_SQL_FILE: day_login_data.sql

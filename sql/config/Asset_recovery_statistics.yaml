@@ -1,0 +1,60 @@
+EMAIL_TITLE: "资产回收统计"
+CONF_VERSION: 1
+BUSUNESS:
+  - TABLE_TITLE: "浅继箱业务汇总"
+    SUB_BUSUNESS:
+      - MERGE: True
+        MERGE_KEY: 'user_id'
+        BUSUNESS_NAME: '查询浅继箱汇总'
+        BUSUNESS_SQL_FILE: shallow_box_business_summary.sql
+        DB_NAME: "mp"
+        BUSUNESS_MAPPING:
+          - MAPPING_KEY: None
+            MAPPING_FILE: None
+        REPLACE_KEY:
+          - REPLACE_VALUE: "relation_no_list1"
+            CONDITION_VALUE: "product_no"
+          - REPLACE_VALUE: "relation_no_list2"
+            CONDITION_VALUE: "product_no1"
+        VICE_DATA:
+          - DATA_DB_NAME: "flower"
+            DATA_NAME: '浅继箱业务汇总-资产编号'
+            DATA_SQL_FILE: asset_number.sql
+  #      - MERGE: True
+  #        MERGE_KEY: 'user_id'
+  #        BUSUNESS_NAME: '查询已安装数量'
+  #        BUSUNESS_SQL_FILE: shallow_check.sql
+  #        DB_NAME: "flower"
+  - TABLE_TITLE: "当日浅继箱回收明细"
+    SUB_BUSUNESS:
+      - MERGE: False
+        MERGE_KEY: None
+        BUSUNESS_NAME: '当日浅继箱回收明细'
+        BUSUNESS_SQL_FILE: dang_ri_hui_shou.sql
+        DB_NAME: "mp"
+        BUSUNESS_MAPPING:
+          - MAPPING_KEY: None
+            MAPPING_FILE: None
+        REPLACE_KEY:
+          - REPLACE_VALUE: "relation_no_list1"
+            CONDITION_VALUE: "product_no"
+          - REPLACE_VALUE: "relation_no_list2"
+            CONDITION_VALUE: "product_no1"
+        VICE_DATA:
+          - DATA_DB_NAME: "flower"
+            DATA_NAME: '当日浅继箱回收明细-资产编号'
+            DATA_SQL_FILE: asset_number.sql
+  - TABLE_TITLE: "历史浅继箱回收明细"
+    SUB_BUSUNESS:
+      - MERGE: False
+        MERGE_KEY: None
+        BUSUNESS_NAME: '历史浅继箱回收明细'
+        BUSUNESS_SQL_FILE: history_of_the_box_recovery_details.sql
+        DB_NAME: "mp"
+  - TABLE_TITLE: "浅继箱发放明细"
+    SUB_BUSUNESS:
+      - MERGE: False
+        MERGE_KEY: None
+        BUSUNESS_NAME: '浅继箱发放明细'
+        BUSUNESS_SQL_FILE: shallow_box_issuance_details.sql
+        DB_NAME: "mp"
