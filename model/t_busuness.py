@@ -15,6 +15,8 @@ class Busuness(Base):
     cId = Column(Integer, ForeignKey("t_config.id", ondelete="CASCADE"), nullable=False,
                  comment="主配置id")
     table_title = Column(String(50), nullable=False, comment="业务标题")
+    table_field_sorting = Column(String(200), comment="列表排序")
+    field_data_sorting = Column(String(200), comment="列表排序")
     createTime = Column(DateTime, nullable=False, server_default=func.now(), comment='记录创建时间')
     updateTime = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now(),
                         comment='记录更新时间')

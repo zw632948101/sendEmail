@@ -2,6 +2,8 @@ EMAIL_TITLE: "每日回访名单"
 CONF_VERSION: 1
 BUSUNESS:
   - TABLE_TITLE: "今日登录的蜂友"
+    TABLE_FIELD_SORTING:
+    FIELD_DATA_SORTING:
     SUB_BUSUNESS:
       - MERGE: False
         MERGE_KEY: None

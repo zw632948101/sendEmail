@@ -172,7 +172,13 @@ class AssemblyConfig:
         session.query(Busuness).filter(
             and_(Busuness.cId == tconfig.id, Busuness.is_delete == 0)).delete()
         for bus_conf in self.sql_conf.get('BUSUNESS'):
-            busunessconf = Busuness(cId=tconfig.id, table_title=bus_conf.get('TABLE_TITLE'))
+            if bus_conf.get('TABLE_FIELD_SORTING'):
+                busunessconf = Busuness(cId=tconfig.id, table_title=bus_conf.get('TABLE_TITLE'),
+                                        table_field_sorting=str(
+                                            bus_conf.get('TABLE_FIELD_SORTING')),
+                                        field_data_sorting=str(bus_conf.get('FIELD_DATA_SORTING')))
+            else:
+                busunessconf = Busuness(cId=tconfig.id, table_title=bus_conf.get('TABLE_TITLE'))
             session.add(busunessconf)
         session.commit()
         self._db_engine.close_session()
@@ -396,6 +402,19 @@ class QuerySqliteData:
         session = self._db_engine.creat_session()
         rd_conf = session.query(Busuness).filter(
             and_(Busuness.cId == confobj.id, Busuness.is_delete == 0)).all()
+        self._db_engine.close_session()
+        return rd_conf
+
+    def query_busuness_first(self, confobj: object, table_title: str):
+        """
+        传config数据库对象
+        :param confobj:
+        :return:
+        """
+        session = self._db_engine.creat_session()
+        rd_conf = session.query(Busuness).filter(
+            and_(Busuness.cId == confobj.id, Busuness.is_delete == 0,
+                 Busuness.table_title == table_title)).first()
         self._db_engine.close_session()
         return rd_conf
 
