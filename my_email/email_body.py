@@ -51,7 +51,7 @@ class EmailBody(sendEmail):
         pattern = re.compile("|".join(param_rep.keys()))
         # content = pattern.sub(lambda m: param_rep[re.escape(m.group(0))], content)
         for k, v in param_rep.items():
-            content = pattern.sub(v, content)
+            content.replace(k, v)
         self.flower_send_message(
             content=content,
             Subject=f"{datetime.strftime(datetime.now(), '%Y-%m-%d')} {Subject}")

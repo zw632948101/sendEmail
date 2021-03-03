@@ -13,7 +13,6 @@ from common.dataProcessing import dataProcessing
 from common.fileOperating import FileOperating
 
 
-
 class SqlStatementOverrun(Exception):
     def __init__(self):
         pass
@@ -39,5 +38,5 @@ if __name__ == '__main__':
         else:
             _cf_key = None
     except IndexError as e:
-        _cf_key = 'return_visit_statistics'
+        _cf_key = None
     f = FlowerSendEmail(_cf_key)
