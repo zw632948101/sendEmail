@@ -101,10 +101,13 @@ class dataProcessing(Config, QuerySqliteData):
             merge_key = conf.merge_key if conf.merge else conf.bus_vice_merge_key
             if merge_key == 'None' or merge_key is None:
                 # 合并单条类型的数据
-                merge_data = list(chain.from_iterable(datas))
+                if isinstance(datas[0],dict):
+                    merge_data = datas
+                else:
+                    merge_data = list(chain.from_iterable(datas))
                 result = {}
                 [result.update(i) for i in merge_data]
-                merge_data = result
+                merge_data = [result]
             else:
                 merge_data = DataAggregate().get_aggregate_result_copy(datas, merge_key)
             return merge_data

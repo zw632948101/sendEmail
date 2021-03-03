@@ -90,3 +90,8 @@ BUSUNESS: # 业务数据，列表结构，可以添加n个
             DATA_NAME: '每日资产发放统计-蜂友蜂场数据查询'
             DATA_SQL_FILE: daily_release_asset_bee_friend_data.sql
 """
+#### 环境变量配置
+MYSQL_DICT = {"数据库名称":{"MYSQL_PASSWD":"数据库密码"，"MYSQL_HOST":"数据库地址","MYSQL_PORT":"链接端口","MYSQL_USER":"账号"}}
+EMAIL_SENDER = 发件人邮箱
+EMAIL_PASSWD = 发件人邮箱密码
+EMAIL_ENV = 环境

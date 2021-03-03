@@ -8,7 +8,7 @@ BUSUNESS:
         BUSUNESS_NAME: '每日采集统计'
         BUSUNESS_SQL_FILE: daily_statistics_collection.sql
         DB_NAME: "flower"
-  - TABLE_TITLE: "每日采集统计"
+  - TABLE_TITLE: "累计采集统计"
     SUB_BUSUNESS:
       - MERGE: True
         MERGE_KEY: None

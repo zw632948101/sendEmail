@@ -283,7 +283,7 @@ class AssemblyConfig:
         tconfig = session.query(TConfig.id).filter(
             and_(TConfig.conifg_name == self.configurationName, TConfig.is_delete == 0)).first()
         for bus_conf in self.sql_conf.get('BUSUNESS'):
-            bus_data = session.query(Busuness.id).filter(
+            bus_data = session.query(Busuness).filter(
                 and_(Busuness.cId == tconfig.id, Busuness.is_delete == 0,
                      Busuness.table_title == bus_conf.get('TABLE_TITLE'))).first()
             for lord_c in bus_conf.get('SUB_BUSUNESS'):
