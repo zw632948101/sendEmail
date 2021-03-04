@@ -37,7 +37,7 @@ class EmailBody(sendEmail):
             field_data_sorting = table_sorting.field_data_sorting
             if table_field_sorting or field_data_sorting:
                 if eval(table_field_sorting):
-                    df = df[table_field_sorting]
+                    df = df[eval(table_field_sorting)]
                 if field_data_sorting != 'None':
                     df = df.sort_values(by=table_sorting.field_data_sorting, ascending=False)
             content += df.to_html()
