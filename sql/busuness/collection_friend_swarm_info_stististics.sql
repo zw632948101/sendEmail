@@ -43,12 +43,12 @@ FROM (SELECT ctbf.real_name       AS '采集人',
                          '%H:%i') AS '结束采集时间',
              count(if(to_days(tsi.create_time) = to_days(now()) AND tsi.creator_id = ctbf.user_id,
                       1, NULL))   AS '今日采集蜂场数',
-             count(if(tsi.create_time >= '2021-03-18 00:00:00' AND tsi.creator_id = ctbf.user_id, 1,
-                      NULL))      AS '3月18日后采集蜂场数',
+             count(if(tsi.create_time >= '2021-01-20 00:00:00' AND tsi.creator_id = ctbf.user_id, 1,
+                      NULL))      AS '1月20日后采集蜂场数',
              count(if(tsi.user_id IN login_userid AND to_days(tsi.create_time) = to_days(NOW()), 1,
                       NULL))      AS '今日采集蜂场登录数',
-             count(if(tsi.user_id IN login_userid AND tsi.create_time >= '2021-03-18 00:00:00', 1,
-                      NULL))      AS '3月18日后采集蜂场今日登录数'
+             count(if(tsi.user_id IN login_userid AND tsi.create_time >= '2021-01-20 00:00:00', 1,
+                      NULL))      AS '1月20日后采集蜂场今日登录数'
       FROM `fc-bee`.t_swarm_info tsi
                LEFT JOIN (SELECT tbf.user_id,
                                  if(tbf.real_name IS NULL, tbf.user_name, tbf.real_name) AS real_name,
