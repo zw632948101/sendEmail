@@ -37,9 +37,15 @@ class EmailBody(sendEmail):
             field_data_sorting = table_sorting.field_data_sorting
             if table_field_sorting or field_data_sorting:
                 if eval(table_field_sorting):
-                    df = df[eval(table_field_sorting)]
+                    try:
+                        df = df[eval(table_field_sorting)]
+                    except KeyError as e:
+                        self.L.error(f'数据中字段与排序字段不一致：{e}')
                 if field_data_sorting != 'None':
-                    df = df.sort_values(by=table_sorting.field_data_sorting, ascending=False)
+                    try:
+                        df = df.sort_values(by=table_sorting.field_data_sorting, ascending=False)
+                    except KeyError as e:
+                        self.L.error(f'统计数据中没有：【{e}】 字段')
             content += df.to_html()
             filetime = datetime.strftime(datetime.now(), '%Y-%m-%d')
             df.to_excel(f"{ATTACHMENT}/{result_key}_{filetime}.xlsx")
