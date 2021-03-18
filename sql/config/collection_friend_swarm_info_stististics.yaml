@@ -1,5 +1,5 @@
 EMAIL_TITLE: "每日采集蜂友统计"
-CONF_VERSION: 1
+CONF_VERSION: 2
 BUSUNESS:
   - TABLE_TITLE: "每日采集蜂友蜂场统计"
     TABLE_FIELD_SORTING: ['采集人', '采集日期', '采集人电话', '今日采集蜂友数', '今日采集蜂场数', '今日采蜂友场登录数',

@@ -28,13 +28,13 @@ WHERE tsi.is_delete = 0
 GROUP BY ctbf.user_id;
 SELECT ctbf.contact_number           AS '联系方式',
        ctbf.real_name                AS '采集人',
-       count(DISTINCT (tsi.id))      AS '6月1号后累计蜂场数量',
-       count(DISTINCT (tsi.user_id)) AS '6月1号后累计采集蜂友数量'
+       count(DISTINCT (tsi.id))      AS '3月18号后累计蜂场数量',
+       count(DISTINCT (tsi.user_id)) AS '3月18号后累计采集蜂友数量'
 FROM `fc-bee`.t_swarm_info tsi
          LEFT JOIN `fc-bee`.t_bee_friend ctbf
                    ON tsi.creator_id = ctbf.user_id AND ctbf.is_delete = 0
          LEFT JOIN `fc-bee`.t_user_role tur ON tsi.creator_id = tur.user_id AND tur.is_delete = 0
 WHERE tsi.is_delete = 0
   AND tur.role_code = 1006
-  AND tsi.create_time >= '2020-06-01 00:00:00'
+  AND tsi.create_time >= '2021-03-18 00:00:00'
 GROUP BY ctbf.user_id;
