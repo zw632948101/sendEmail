@@ -18,7 +18,7 @@ class SqlStatementOverrun(Exception):
         pass
 
     def __str__(self):
-        print("SQL数量超限，一个文件只能有一个SQL")
+        print("SQL数量超限，一个文件只 能有一个SQL")
 
 
 class FlowerSendEmail(dataProcessing, FileOperating, EmailBody):
